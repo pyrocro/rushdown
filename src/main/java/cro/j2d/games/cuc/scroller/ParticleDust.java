@@ -13,11 +13,11 @@ import java.util.Vector;
 
 public class ParticleDust
 extends Particle {
-    static final int TYPE_HEALTH_UP = 1;
-    static final int TYPE_POINTS_UP = 10;
+    static final int TYPE_HEALTH_UP = 10;
+    static final int TYPE_POINTS_UP = 80;
     static final int TYPE_DARK_PLAUGE = 20;
     protected int dustType = 10;
-    static final int exlosionSize = 4;
+    static final int exlosionSize = 10;
 
     public ParticleDust(Vector vec, Sprite s, int x_tmp, int y_tmp, World w) {
         super(vec, s, x_tmp, y_tmp, w);

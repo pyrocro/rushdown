@@ -51,6 +51,8 @@ public class World {
     int LEVEL_PIXEL_HEIGHT = this.playableYSize * 2;
 
     public void loadData() {
+        this.getSpriteMan().loadSprite("cro/j2d/pics/hero-scarf-rakuten-giant-panda.png", "rakuten-panda");
+        this.getSpriteMan().loadSprite("cro/j2d/pics/proud-panda.png", "proud-panda");
         this.getSpriteMan().loadSprite("cro/j2d/pics/nebula_2.png", "nebula");
         this.getSpriteMan().loadSprite("cro/j2d/pics/enemy3_dmg_1.gif", "spjunk1");
         this.getSpriteMan().loadSprite("cro/j2d/pics/enemy3.gif", "spjunk2");
@@ -64,8 +66,10 @@ public class World {
         this.getSpriteMan().loadSprite("cro/j2d/pics/pickup2.gif", "pickup2");
         this.getSpriteMan().loadSprite("cro/j2d/pics/pickup3.gif", "pickup3");
         this.getSpriteMan().loadSprite("cro/j2d/pics/pickup4.gif", "pickup4");
-        this.getSpriteMan().loadSprite("cro/j2d/pics/enemy2.gif", "enemy2");
-        this.getSpriteMan().loadSprite("cro/j2d/pics/enemy3_dmg_1.gif", "enemy3");
+        //this.getSpriteMan().loadSprite("cro/j2d/pics/enemy2.gif", "enemy2");
+        this.getSpriteMan().loadSprite("cro/j2d/pics/rakuten-bee-small.png", "enemy2");
+        //this.getSpriteMan().loadSprite("cro/j2d/pics/enemy3_dmg_1.gif", "enemy3");
+        this.getSpriteMan().loadSprite("cro/j2d/pics/hero-panda-small.png", "enemy3");
         this.getSfxMan().setNullSound(this.getSfxMan().loadSfx("cro/sounds/sfx/null.au", "null"));
         this.getSfxMan().loadSfx("cro/sounds/loops/fruity_loop.au", "fruity_loop");
         this.getSfxMan().loadSfx("cro/sounds/loops/rave.au", "rave");
@@ -163,16 +167,16 @@ public class World {
         Object obj = null;
         Object sprite = null;
         SpaceJunkObj spaceJunkObj = null;
-        for (i = 0; i < 15; ++i) {
+        for (i = 0; i < 1500; ++i) {
             spaceJunkObj = new SpaceJunkObj(this.getVecDebris2(), null, (int)((double)this.getPlayableXSize() * Math.random()), (int)((double)this.getLEVEL_PIXEL_HEIGHT() * Math.random()), this);
-            spaceJunkObj.setColorR(0.9f);
+            spaceJunkObj.setColorR(0.2f);
             spaceJunkObj.setColorG((float)Math.random());
             spaceJunkObj.setColorB((float)Math.random());
         }
-        for (i = 0; i < 5; ++i) {
+        for (i = 0; i < 50; ++i) {
             spaceJunkObj = new SpaceJunkObj(this.getVecDebris2(), null, 20, 2, (int)((double)this.getPlayableXSize() * Math.random()), (int)((double)this.getLEVEL_PIXEL_HEIGHT() * Math.random()), this);
             spaceJunkObj.setColorR((float)Math.random());
-            spaceJunkObj.setColorG(0.9f);
+            spaceJunkObj.setColorG(0.2f);
             spaceJunkObj.setColorB((float)Math.random());
         }
         PlayerObj playerObj = new PlayerObj(this.getVecPlayer(), this.getSpriteMan().getSprite("ship_e"), 1, this.getPlayableYSize() / 2, this);
@@ -392,6 +396,7 @@ public class World {
         g.setColor(Color.RED);
         g.fillRect((int)((double)(this.getPlayableXSize() / 2) - 108.5) + 62, 17, (int)((double)pObj.getHealth() / 2.857), 10);
         this.spriteMan.getSprite("shields").draw(g, (int)((double)(this.getPlayableXSize() / 2) - 108.5), 0);
+        this.spriteMan.getSprite("proud-panda").draw(g, (int)((double)(this.getPlayableXSize()) - 100), (int)((double)(this.getPlayableYSize()) - 65));
         g.setColor(Color.WHITE);
         g.drawString("fps: " + fps, 10, this.getPlayableYMax() - 10);
         g.drawString("# of entities: " + (this.vecDebris.size() + this.vecDebris2.size() + this.vecEnemies.size() + this.vecEnemyShots.size() + this.vecPlayer.size() + this.vecPlayerShots.size()), 90, this.getPlayableYMax() - 10);

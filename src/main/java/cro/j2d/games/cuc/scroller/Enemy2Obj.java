@@ -26,7 +26,7 @@ extends Obj {
         this.y = this.objWorld.getPlayableY() + (int)((double)(this.objWorld.getPlayableYSize() - this.height) * Math.random());
         this.xs = 0.0;
         this.ys = 0.0;
-        this.dxs = -(this.width / 5);
+        this.dxs = -(this.width / 25);
         this.dys = 0.0;
         this.health = 100;
         this.worth = 2000;

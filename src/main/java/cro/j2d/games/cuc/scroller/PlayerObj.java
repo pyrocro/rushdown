@@ -19,7 +19,7 @@ extends Obj {
     private long shot1Wait = 0L;
     private long shot2Wait = 0L;
     private long shot3Wait = 0L;
-    private long thrustWait = 0L;
+    private long thrustWait = 10L;
     final double MAX_SPEED = 10.0;
     private Vector vecShots = null;
     private int score;
@@ -77,7 +77,7 @@ extends Obj {
                 this.dys = 0.0;
             }
         }
-        for (i = 0; i < 1; ++i) {
+        for (i = 0; i < 10; ++i) {
             ex = new Particle(this.vector, null, (int)this.x, (int)(this.y + (double)(this.height / 2) - 5.0 + Math.random() * 8.0), this.objWorld);
             ex.setColorR(0.6f);
             ex.setColorG(0.6f);
@@ -120,7 +120,7 @@ extends Obj {
         }
         if (InputClass.getPlayer1Right() && this.dxs <= 10.0) {
             this.dxs += ACCELERATION;
-            for (i = 0; i < 1; ++i) {
+            for (i = 0; i < 10; ++i) {
                 ex = new Particle(this.vector, null, (int)this.x, (int)(this.y + (double)(this.height / 2) - 4.0 + Math.random() * 8.0), this.objWorld);
                 ex.setWidth((int)(this.xs * Math.random() * -2.5));
                 if (Math.random() > 0.5) {
@@ -140,7 +140,7 @@ extends Obj {
         }
         if (InputClass.getPlayer1Up() && this.dys >= -10.0) {
             this.dys -= ACCELERATION;
-            for (i = 0; i < 1; ++i) {
+            for (i = 0; i < 10; ++i) {
                 ex = new Particle(this.vector, null, (int)(this.x + (double)(this.width / 2) - 4.0 + Math.random() * 8.0), (int)this.y + this.height, this.objWorld);
                 ex.setHeight((int)(this.ys * Math.random() * -1.5));
                 if (Math.random() > 0.5) {
@@ -160,7 +160,7 @@ extends Obj {
         }
         if (InputClass.getPlayer1Down() && this.dys <= 10.0) {
             this.dys += ACCELERATION;
-            for (i = 0; i < 1; ++i) {
+            for (i = 0; i < 10; ++i) {
                 ex = new Particle(this.vector, null, (int)(this.x + (double)(this.width / 2) - 4.0 + Math.random() * 8.0), (int)this.y, this.objWorld);
                 ex.setHeight((int)(this.ys * Math.random() * -1.5));
                 if (Math.random() > 0.5) {

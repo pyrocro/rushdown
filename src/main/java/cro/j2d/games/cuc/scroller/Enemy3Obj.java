@@ -26,7 +26,7 @@ extends Obj {
         this.y = this.objWorld.getPlayableY() + (int)((double)(this.objWorld.getPlayableYSize() - this.height) * Math.random());
         this.xs = 0.0;
         this.ys = 0.0;
-        this.dxs = -(this.width / 5);
+        this.dxs = -(this.width / 30);
         this.dys = 0.0;
         this.health = 200;
         this.worth = 4000;
@@ -81,7 +81,7 @@ extends Obj {
             ex.setWidth(3 + (int)(5.0 * Math.random()));
             ex.setHeight(3 + (int)(5.0 * Math.random()));
         }
-        for (i = 0; i < 7; ++i) {
+        for (i = 0; i < 7; ++i) {            
             ex = new Particle(this.vector, null, (int)(this.x + (double)(this.width / 2) * Math.random()), (int)(this.y + (double)(this.height / 3)) + (int)((double)(this.height / 3) * Math.random()), this.objWorld);
             ex.setDxs(this.dxs * (4.0 * Math.random()) * -1.0);
             ex.setHealth(20);

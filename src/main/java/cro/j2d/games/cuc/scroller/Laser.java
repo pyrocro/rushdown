@@ -89,7 +89,7 @@ extends Particle {
     }
 
     public void doExplosion() {
-        if (Math.random() > 0.1) {
+        if (Math.random() > 0.8) {
             return;
         }
         double sp = 0.0;
@@ -114,7 +114,7 @@ extends Particle {
                 sp = 0.5;
             }
         }
-        for (int i = 0; i < 6; ++i) {
+        for (int i = 0; i < 12; ++i) {
             Laser ex = new Laser(this.vector, null, (int)this.x, (int)(this.y + Math.random() * 3.0), this.objWorld);
             ex.setWidth((int)(this.xs * Math.random() * sp));
             if (Math.random() > 0.5) {
@@ -122,11 +122,12 @@ extends Particle {
             } else {
                 ex.setHeight(-(1 + (int)(8.0 * Math.random())));
             }
+            float green = 0.7f + ((float)((3.0 * Math.random())/10f));
             ex.setDxs(ex.width);
             ex.setDys(ex.height);
             ex.setHealth(90);
             ex.setColorR(0.3f);
-            ex.setColorG(1.0f);
+            ex.setColorG(green);
             ex.setColorB(1.0f);
             ex.setCRate(-0.03f);
             ex.setType(20);
@@ -147,7 +148,7 @@ extends Particle {
 
     public static void createLaserShockwave(Laser l1) {
         Particle ex = null;
-        for (int i = 0; i < 2; ++i) {
+        for (int i = 0; i < 20; ++i) {
             ex = new Particle(l1.vector, null, (int)l1.x, (int)l1.y, l1.objWorld);
             ex.setWidth(2);
             ex.setHeight(3);

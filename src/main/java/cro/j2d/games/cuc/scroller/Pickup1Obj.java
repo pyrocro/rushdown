@@ -81,7 +81,7 @@ extends Obj {
         if (obj == null) {
             return;
         }
-        ParticleDust.createHealthDust(10, this, obj);
+        ParticleDust.createHealthDust(100, this, obj);
     }
 
     public static void createHPPickup(int amt, Obj obj) {

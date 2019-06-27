@@ -99,7 +99,7 @@ extends KeyAdapter {
                 player1Down = true;
                 break;
             }
-            case KeyEvent.VK_Z: {
+            case KeyEvent.VK_SHIFT: {
                 player1Fire1 = true;
                 break;
             }
@@ -137,7 +137,7 @@ extends KeyAdapter {
                 player1Down = false;
                 break;
             }
-            case KeyEvent.VK_Z: {
+            case KeyEvent.VK_SHIFT: {
                 player1Fire1 = false;
                 break;
             }

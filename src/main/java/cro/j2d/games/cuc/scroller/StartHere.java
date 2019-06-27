@@ -99,7 +99,7 @@ implements Runnable {
                 loop = 0;
                 if (music_count++ > 10) {
                     music_count = 0;
-                    this.world.moreEnemies(20);
+                    this.world.moreEnemies(6);
                 }
             }
             if (System.currentTimeMillis() >= logicSpeed) {
