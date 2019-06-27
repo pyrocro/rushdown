@@ -32,15 +32,17 @@ public class SpriteMan {
     public Sprite loadSprite(String loc, String alias) {
         BufferedImage srcImage = null;
         try {
-            URL url = this.getClass().getClassLoader().getResource("cro/j2d/pics/");
-            System.out.println(url);
+            //URL url = new URL(this.getClass().getClassLoader().getResource(".").toString()+"/"+loc);           
+            URL url = this.getClass().getClassLoader().getResource(loc);
+            //URL url = new URL("file://Users/ts-yohance.mcdonald/NetBeansProjects/rushdown-marven/rushdown-maven/rushdown-maven/src/main/java/cro/j2d/pics/boom.gif");
+            System.out.println(url+"/"+loc);
             if (url == null) {
                 this.err("could not find " + loc);
             }
             srcImage = ImageIO.read(url);
         }
         catch (IOException e) {
-            this.err("could not find " + loc);
+            this.err(e.getMessage()+"---> could not find " + loc);
         }
         GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
         BufferedImage img = gc.createCompatibleImage(srcImage.getWidth(), srcImage.getHeight(), 2);

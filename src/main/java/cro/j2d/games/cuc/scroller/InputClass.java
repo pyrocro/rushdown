@@ -81,6 +81,7 @@ extends KeyAdapter {
     }
 
     public void keyPressed(KeyEvent e) {
+        
         switch (e.getKeyCode()) {
             case 37: {
                 player1Left = true;
@@ -98,7 +99,7 @@ extends KeyAdapter {
                 player1Down = true;
                 break;
             }
-            case 17: {
+            case KeyEvent.VK_Z: {
                 player1Fire1 = true;
                 break;
             }
@@ -136,7 +137,7 @@ extends KeyAdapter {
                 player1Down = false;
                 break;
             }
-            case 17: {
+            case KeyEvent.VK_Z: {
                 player1Fire1 = false;
                 break;
             }

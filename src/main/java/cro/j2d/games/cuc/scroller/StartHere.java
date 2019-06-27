@@ -99,17 +99,17 @@ implements Runnable {
                 loop = 0;
                 if (music_count++ > 10) {
                     music_count = 0;
-                    this.world.moreEnemies(6);
+                    this.world.moreEnemies(20);
                 }
             }
             if (System.currentTimeMillis() >= logicSpeed) {
-                logicSpeed = System.currentTimeMillis() + 30L;
+                logicSpeed = System.currentTimeMillis() + 15L;
                 this.world.doLogicUpdate();
                 tmp_int = pObj.getScore() + 1;
                 pObj.setScore(tmp_int);
             }
             if (System.currentTimeMillis() >= refreshRate) {
-                refreshRate = System.currentTimeMillis() + 25L;
+                refreshRate = System.currentTimeMillis() + 8L;
                 this.world.getOutput().clearGraphics();
                 this.world.getOutput().render(this.world.getVecDebris());
                 this.world.getOutput().render(this.world.getVecDebris2());

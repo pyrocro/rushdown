@@ -39,19 +39,19 @@ public class World {
     private Vector vecEnemies = null;
     private Vector vecEnemyShots = null;
     private Vector vecPlayerShots = null;
-    final int screenX = 640;
-    final int screenY = 480;
+    final int screenX = 1280;
+    final int screenY = 720;
     private int playableX = 0;
     private int playableY = 40;
-    private int playableXSize = 640;
-    private int playableYSize = 480 - this.playableY;
+    private int playableXSize = screenX;
+    private int playableYSize = screenY - this.playableY;
     private int playableXMax = this.playableXSize + this.playableX;
     private int playableYMax = this.playableYSize + this.playableY;
     int LEVEL_PIXEL_LENGTH = this.playableXSize * 4;
     int LEVEL_PIXEL_HEIGHT = this.playableYSize * 2;
 
     public void loadData() {
-        //this.getSpriteMan().loadSprite("cro/j2d/pics/nebula_2.png", "nebula");
+        this.getSpriteMan().loadSprite("cro/j2d/pics/nebula_2.png", "nebula");
         this.getSpriteMan().loadSprite("cro/j2d/pics/enemy3_dmg_1.gif", "spjunk1");
         this.getSpriteMan().loadSprite("cro/j2d/pics/enemy3.gif", "spjunk2");
         this.getSpriteMan().loadSprite("cro/j2d/pics/ship_e.png", "ship_e");
@@ -524,11 +524,11 @@ public class World {
     }
 
     public int getScreenX() {
-        return 640;
+        return screenX;
     }
 
     public int getScreenY() {
-        return 480;
+        return screenY;
     }
 
     public void setPlayableXSize(int playableXSize) {
