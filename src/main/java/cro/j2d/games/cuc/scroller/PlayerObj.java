@@ -19,7 +19,7 @@ extends Obj {
     private long shot1Wait = 0L;
     private long shot2Wait = 0L;
     private long shot3Wait = 0L;
-    private long thrustWait = 10L;
+    private long thrustWait = 0L;
     final double MAX_SPEED = 10.0;
     private Vector vecShots = null;
     private int score;
@@ -120,7 +120,7 @@ extends Obj {
         }
         if (InputClass.getPlayer1Right() && this.dxs <= 10.0) {
             this.dxs += ACCELERATION;
-            for (i = 0; i < 10; ++i) {
+            for (i = 0; i < 100; ++i) {
                 ex = new Particle(this.vector, null, (int)this.x, (int)(this.y + (double)(this.height / 2) - 4.0 + Math.random() * 8.0), this.objWorld);
                 ex.setWidth((int)(this.xs * Math.random() * -2.5));
                 if (Math.random() > 0.5) {

@@ -39,8 +39,8 @@ public class World {
     private Vector vecEnemies = null;
     private Vector vecEnemyShots = null;
     private Vector vecPlayerShots = null;
-    final int screenX = 1280;
-    final int screenY = 720;
+    final int screenX = 1920;
+    final int screenY = 1080;
     private int playableX = 0;
     private int playableY = 40;
     private int playableXSize = screenX;
@@ -173,7 +173,7 @@ public class World {
             spaceJunkObj.setColorG((float)Math.random());
             spaceJunkObj.setColorB((float)Math.random());
         }
-        for (i = 0; i < 50; ++i) {
+        for (i = 0; i < 500; ++i) {
             spaceJunkObj = new SpaceJunkObj(this.getVecDebris2(), null, 20, 2, (int)((double)this.getPlayableXSize() * Math.random()), (int)((double)this.getLEVEL_PIXEL_HEIGHT() * Math.random()), this);
             spaceJunkObj.setColorR((float)Math.random());
             spaceJunkObj.setColorG(0.2f);

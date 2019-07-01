@@ -48,7 +48,7 @@ extends Canvas {
 
     public Canvas setupCanvas() {
         this.addKeyListener(InputClass.get());
-        this.setBounds(0, 0, this.world.getScreenX(), this.world.getScreenY());
+        this.setBounds(0, 0, this.world.getScreenX(), this.world.getScreenY());        
         this.setIgnoreRepaint(true);
         this.createBufferStrategy(2);
         this.strategy = this.getBufferStrategy();
@@ -63,9 +63,13 @@ extends Canvas {
         JPanel panel = (JPanel)container.getContentPane();
         panel.setPreferredSize(new Dimension(this.world.getScreenX(), this.world.getScreenY()));
         panel.setLayout(null);
+        //https://stackoverflow.com/questions/45722445/how-to-set-jframe-to-full-screen
+        container.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        container.setUndecorated(true);
+        //**********************************************************************
         container.pack();
         container.setResizable(false);
-        container.setVisible(true);
+        container.setVisible(true);        
         container.addWindowListener(new WindowAdapter(){
 
             public void windowClosing(WindowEvent e) {

@@ -83,7 +83,7 @@ extends Particle {
             } else {
                 ex.setDys(9.0 + 3.0 * Math.random() * -1.0);
             }
-            ex.setHealth(80);
+            ex.setHealth(80);  
             ex.setColorR((float)Math.random());
             ex.setColorG(1.0f);
             ex.setColorB((float)Math.random());
