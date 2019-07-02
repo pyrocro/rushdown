@@ -4,11 +4,13 @@
 package cro.j2d.games.cuc.scroller;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.image.ImageObserver;
+import java.awt.geom.AffineTransform;
 
 public class Sprite {
     private Image image;
+    private double rot = 0;
 
     public Sprite(Image img) {
         this.image = img;
@@ -24,7 +26,16 @@ public class Sprite {
     }
 
     public void draw(Graphics g, int x, int y) {
-        g.drawImage(this.image, x, y, null);
+        AffineTransform identity = new AffineTransform();
+        Graphics2D g2d = (Graphics2D)g;
+        AffineTransform trans = new AffineTransform();
+        trans.setTransform(identity);        
+        rot += 1;
+        if (rot >= 360) rot = 0;
+        trans.rotate( Math.toRadians(rot),(int)(x+this.image.getWidth(null)/2),(int)(y+this.image.getHeight(null)/2) );
+        trans.translate(x, y);
+        g2d.drawImage(image, trans, null);
+        //g.drawImage(this.image, x, y, null);
     }
 
     public Image getImage() {

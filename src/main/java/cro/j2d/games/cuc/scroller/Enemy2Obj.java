@@ -79,8 +79,8 @@ extends Obj {
     public void doExplosion() {
         int i;
         Particle ex;
-        for (i = 0; i < 4; ++i) {
-            ex = new Particle(this.vector, null, (int)(this.x + (double)(this.width / 2) * Math.random()), (int)(this.y + (double)(this.height / 4)) + (int)((double)(this.height / 2) * Math.random()), this.objWorld);
+        for (i = 0; i < 40; ++i) {
+            ex = new Particle(this.vector, null, (int)(this.x + (double)(this.width / 1) * Math.random()), (int)(this.y + (double)(this.height / 2)) + (int)((double)(this.height / 2) * Math.random()), this.objWorld);
             ex.setDxs(this.xs * Math.random() * -1.5);
             ex.setDys(this.ys * Math.random() * 1.5);
             ex.setHealth(30);
@@ -90,8 +90,8 @@ extends Obj {
             ex.setWidth(2 + (int)(6.0 * Math.random()));
             ex.setHeight(2 + (int)(6.0 * Math.random()));
         }
-        for (i = 0; i < 6; ++i) {
-            ex = new Particle(this.vector, null, (int)(this.x + (double)(this.width / 2) * Math.random()), (int)(this.y + (double)(this.height / 4)) + (int)((double)this.height * Math.random()), this.objWorld);
+        for (i = 0; i < 60; ++i) {
+            ex = new Particle(this.vector, null, (int)(this.x + (double)(this.width / 1) * Math.random()), (int)(this.y + (double)(this.height / 2)) + (int)((double)this.height * Math.random()), this.objWorld);
             ex.setDxs(this.xs);
             if (Math.random() > 0.5) {
                 ex.setDys(2.0 * Math.random());

@@ -64,8 +64,8 @@ extends Canvas {
         panel.setPreferredSize(new Dimension(this.world.getScreenX(), this.world.getScreenY()));
         panel.setLayout(null);
         //https://stackoverflow.com/questions/45722445/how-to-set-jframe-to-full-screen
-        container.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        container.setUndecorated(true);
+        //container.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //container.setUndecorated(true);
         //**********************************************************************
         container.pack();
         container.setResizable(false);

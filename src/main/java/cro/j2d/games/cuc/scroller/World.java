@@ -39,21 +39,21 @@ public class World {
     private Vector vecEnemies = null;
     private Vector vecEnemyShots = null;
     private Vector vecPlayerShots = null;
-    final int screenX = 1920;
-    final int screenY = 1080;
+    final int screenX = 1280;
+    final int screenY = 720;
     private int playableX = 0;
     private int playableY = 40;
     private int playableXSize = screenX;
     private int playableYSize = screenY - this.playableY;
     private int playableXMax = this.playableXSize + this.playableX;
     private int playableYMax = this.playableYSize + this.playableY;
-    int LEVEL_PIXEL_LENGTH = this.playableXSize * 4;
-    int LEVEL_PIXEL_HEIGHT = this.playableYSize * 2;
+    int LEVEL_PIXEL_LENGTH = this.playableXSize * 1;
+    int LEVEL_PIXEL_HEIGHT = this.playableYSize * 1;
 
     public void loadData() {
         this.getSpriteMan().loadSprite("cro/j2d/pics/hero-scarf-rakuten-giant-panda.png", "rakuten-panda");
         this.getSpriteMan().loadSprite("cro/j2d/pics/proud-panda.png", "proud-panda");
-        this.getSpriteMan().loadSprite("cro/j2d/pics/nebula_2.png", "nebula");
+        this.getSpriteMan().loadSprite("cro/j2d/pics/nebula.png", "nebula");
         this.getSpriteMan().loadSprite("cro/j2d/pics/enemy3_dmg_1.gif", "spjunk1");
         this.getSpriteMan().loadSprite("cro/j2d/pics/enemy3.gif", "spjunk2");
         this.getSpriteMan().loadSprite("cro/j2d/pics/ship_e.png", "ship_e");
@@ -167,7 +167,7 @@ public class World {
         Object obj = null;
         Object sprite = null;
         SpaceJunkObj spaceJunkObj = null;
-        for (i = 0; i < 1500; ++i) {
+        for (i = 0; i < (150*7); ++i) {
             spaceJunkObj = new SpaceJunkObj(this.getVecDebris2(), null, (int)((double)this.getPlayableXSize() * Math.random()), (int)((double)this.getLEVEL_PIXEL_HEIGHT() * Math.random()), this);
             spaceJunkObj.setColorR(0.2f);
             spaceJunkObj.setColorG((float)Math.random());
