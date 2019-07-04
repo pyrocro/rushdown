@@ -40,6 +40,7 @@ public abstract class Obj {
     private String str;
     protected boolean visible = false;
     protected int vecIndex;
+    protected double angle = 0;
 
     public int getVecIndex() {
         return this.vecIndex;
@@ -74,6 +75,7 @@ public abstract class Obj {
         this.sfx_shoot1 = w.getSfxMan().getNullSound();
         this.sfx_shoot2 = w.getSfxMan().getNullSound();
         this.sfx_shoot3 = w.getSfxMan().getNullSound();
+        this.angle = 0;
     }
 
     public void move(long delta) {
@@ -183,6 +185,7 @@ public abstract class Obj {
         this.xs = -this.width;
         this.ys = 0.0;
         this.visible = false;
+        this.angle = 0;
     }
 
     public abstract void doLogic();

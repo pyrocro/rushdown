@@ -12,6 +12,7 @@ import cro.j2d.games.cuc.scroller.PlayerObj;
 import cro.j2d.games.cuc.scroller.Sfx;
 import cro.j2d.games.cuc.scroller.Sprite;
 import cro.j2d.games.cuc.scroller.World;
+import java.awt.Graphics;
 import java.util.Vector;
 
 public class Enemy2Obj
@@ -65,7 +66,7 @@ extends Obj {
             obj.setX(this.x - (double)obj.width);
             obj.setHealth(obj.getHealth() - 25);
             return;
-        }
+        }        
         if (obj instanceof Enemy2Obj || obj instanceof Enemy3Obj) {
             obj.setDxs(obj.dxs * 1.2);
             this.setDxs(this.dxs * 0.8);
@@ -130,6 +131,13 @@ extends Obj {
             ex.setHeight(2 + (int)(5.0 * Math.random()));
         }
         this.sfx_hit.play();
+    }
+    public void draw(Graphics g) {
+        this.angle = Math.random() * 10;
+        if (this.sprite != null) {
+            this.sprite.draw(g, (int)this.x, (int)this.y, angle);
+            return;
+        }
     }
 }
 

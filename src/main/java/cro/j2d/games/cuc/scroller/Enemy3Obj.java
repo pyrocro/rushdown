@@ -12,6 +12,7 @@ import cro.j2d.games.cuc.scroller.PlayerObj;
 import cro.j2d.games.cuc.scroller.Sfx;
 import cro.j2d.games.cuc.scroller.Sprite;
 import cro.j2d.games.cuc.scroller.World;
+import java.awt.Graphics;
 import java.util.Vector;
 
 public class Enemy3Obj
@@ -100,7 +101,7 @@ extends Obj {
         if (other instanceof Laser) {
             this.setHealth(this.getHealth() - 100);
         }
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < 10; ++i) {
             Particle ex = new Particle(this.vector, null, (int)other.x, (int)(other.y + Math.random() * 3.0), this.objWorld);
             ex.setDxs(this.dxs * Math.random());
             if (Math.random() > 0.5) {
@@ -110,13 +111,21 @@ extends Obj {
             }
             ex.setHealth(20);
             ex.setColorR(1.0f);
-            ex.setColorG(0.4f);
-            ex.setColorB(0.4f);
-            ex.setCRate(-0.06f);
+            ex.setColorG(0.3f);
+            ex.setColorB(0.3f);
+            ex.setCRate(-0.001f);
             ex.setWidth(3 + (int)(2.0 * Math.random()));
             ex.setHeight(3 + (int)(2.0 * Math.random()));
         }
         this.sfx_hit.play();
+    }
+    public void draw(Graphics g) {
+        this.angle += 5;
+        if (this.angle >360 ) this.angle = 0;
+        if (this.sprite != null) {
+            this.sprite.draw(g, (int)this.x, (int)this.y, angle);
+            return;
+        }
     }
 }
 
