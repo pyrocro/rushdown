@@ -32,6 +32,7 @@ public class Sprite {
         //g.drawImage(this.image, x, y, null);
     }
     public void draw(Graphics g, int x, int y,double angle) {
+        if(angle > 360 || angle < 0 ) angle = 0;
         Graphics2D g2d = (Graphics2D)g;
         AffineTransform trans = new AffineTransform();
         trans.setTransform(identity);

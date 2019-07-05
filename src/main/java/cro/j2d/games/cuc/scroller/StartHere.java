@@ -3,17 +3,8 @@
  */
 package cro.j2d.games.cuc.scroller;
 
-import cro.j2d.games.cuc.scroller.OutputClass;
-import cro.j2d.games.cuc.scroller.PlayerObj;
-import cro.j2d.games.cuc.scroller.SfxMan;
-import cro.j2d.games.cuc.scroller.World;
 import java.applet.Applet;
 import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.Component;
-import java.awt.LayoutManager;
-import java.io.PrintStream;
-import java.util.Vector;
 import javax.swing.JOptionPane;
 
 public class StartHere
@@ -27,6 +18,7 @@ implements Runnable {
     String dbPass = "12345";
     boolean gameEnd = false;
     World world = null;
+    LogicThread logicThread = null;
 
     public void init() {
     }
@@ -76,7 +68,7 @@ implements Runnable {
             game.world.reset();
         }
     }
-
+    
     private boolean gameLoop() {
         this.world.getSfxMan().loadClip("cro/sounds/loops/fruity_loop.au", "fanfare_");
         long lastLoopTime = 0L;
@@ -92,6 +84,9 @@ implements Runnable {
         PlayerObj pObj = (PlayerObj)this.world.getVecPlayer().get(0);
         this.world.msgPause("'Ctrl' to fire and arrow key to move", "fruity_loop");
         this.world.getSfxMan().loopClip("fruity_loop");
+        logicThread = new LogicThread(this.world);
+        logicThread.setName("RushdownLogicThread");
+        logicThread.start();
         while (!this.gameEnd) {
             if (System.currentTimeMillis() >= delta) {
                 fps = (long)loop * (System.currentTimeMillis() / delta);
@@ -102,12 +97,12 @@ implements Runnable {
                     this.world.moreEnemies(6);
                 }
             }
-            if (System.currentTimeMillis() >= logicSpeed) {
-                logicSpeed = System.currentTimeMillis() + 15L;
+            /*if (System.currentTimeMillis() >= logicSpeed) {
+                logicSpeed = System.currentTimeMillis() + 16L;
                 this.world.doLogicUpdate();
                 tmp_int = pObj.getScore() + 1;
                 pObj.setScore(tmp_int);
-            }
+            }*/
             if (System.currentTimeMillis() >= refreshRate) {
                 refreshRate = System.currentTimeMillis() + 8L;
                 this.world.getOutput().clearGraphics();
@@ -132,13 +127,19 @@ implements Runnable {
                     this.world.updateDBInfo(this.dbHost, this.dbPort, this.dbName, this.dbUser, this.dbPass);
                 }
                 return true;
-            }
+            }                   
             try {
-                Thread.sleep(10L);
+                //Thread.sleep(1L);
+                Thread.yield();
             }
             catch (Exception e) {
                 System.out.println(" exception in the sleep 'try method'");
             }
+        }
+        logicThread.StopMe();
+        logicThread.stop();
+        while(logicThread.isAlive()){
+            //wait for logic thread to die
         }
         return false;
     }

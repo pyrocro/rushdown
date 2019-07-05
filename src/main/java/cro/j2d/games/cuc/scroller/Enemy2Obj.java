@@ -114,6 +114,7 @@ extends Obj {
     public void doHit(Obj other) {
         if (other instanceof Laser) {
             this.setHealth(this.getHealth() - other.worth);
+            this.angle -= 120;            
         }
         for (int i = 0; i < 3; ++i) {
             Particle ex = new Particle(this.vector, null, (int)other.x + other.width, (int)(other.y + (double)(other.height / 2) - 4.0 + Math.random() * 8.0), this.objWorld);

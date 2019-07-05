@@ -39,9 +39,10 @@ extends Obj {
 
     private void bounced() {
         if (++this.wallBounce >= 3) {
-            this.doExplosion(null);
-            Particle.createMissedText(this);
-            this.reset();
+            this.wallBounce = 0;
+            //this.doExplosion(null);
+            //Particle.createMissedText(this);
+            //this.reset();
             return;
         }
         this.sprite = this.objWorld.getSpriteMan().getSprite("pickup" + (this.wallBounce + 1));
