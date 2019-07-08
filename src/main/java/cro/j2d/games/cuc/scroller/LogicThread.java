@@ -7,7 +7,7 @@ package cro.j2d.games.cuc.scroller;
 
 /**
  *
- * @author ts-yohance.mcdonald
+ * @author Yohance McDonald
  */
 public class LogicThread extends Thread {
 

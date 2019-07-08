@@ -33,8 +33,7 @@ public class SpriteMan {
         BufferedImage srcImage = null;
         try {
             //URL url = new URL(this.getClass().getClassLoader().getResource(".").toString()+"/"+loc);           
-            URL url = this.getClass().getClassLoader().getResource(loc);
-            //URL url = new URL("file://Users/ts-yohance.mcdonald/NetBeansProjects/rushdown-marven/rushdown-maven/rushdown-maven/src/main/java/cro/j2d/pics/boom.gif");
+            URL url = this.getClass().getClassLoader().getResource(loc);            
             System.out.println(url+"/"+loc);
             if (url == null) {
                 this.err("could not find " + loc);
