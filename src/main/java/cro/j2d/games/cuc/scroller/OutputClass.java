@@ -1,118 +1,263 @@
-/*
- * Decompiled with CFR 0.139.
- */
+// Decompiled by DJ v3.9.9.91 Copyright 2005 Atanas Neshkov  Date: 6/8/2006 1:52:32 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   OutputClass.java
+
 package cro.j2d.games.cuc.scroller;
 
-import cro.j2d.games.cuc.scroller.InputClass;
-import cro.j2d.games.cuc.scroller.Obj;
-import cro.j2d.games.cuc.scroller.Sprite;
-import cro.j2d.games.cuc.scroller.World;
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LayoutManager;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import cro.j2d.games.cuc.scroller.pixelmap.Sprite;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class OutputClass
-extends Canvas {
-    private static final long serialVersionUID = 4048791273341138227L;
-    World world = null;
-    private Sprite background = null;
-    ArrayList arrayList = null;
-    Obj obj = null;
-    boolean exitCondition = false;
+// Referenced classes of package cro.j2d.games.cuc.scroller:
+//            InputClass, MouseInput, World, Obj, 
+//            Sprite
+
+public class OutputClass extends Canvas
+{
+    private static final long serialVersionUID = 0x3830323631333533L;
+    Window win;
+    World world;
+    private Sprite backGround;
+    private 
+    ArrayList arrayList;
+    Obj obj;
+    boolean exitCondition;
     private BufferStrategy strategy;
-    Graphics graphics = null;
-    Graphics2D graphics2D = null;
+    Graphics graphics;
+    /*volatile*/ Graphics2D graphics2D;
+    JFrame container;
 
-    public void setKeyListner(KeyAdapter input) {
-        this.addKeyListener(InputClass.get());
+	final boolean FULLSCREEN = false;
+
+    public void setKeyListner(KeyAdapter input)
+    {    
+        addKeyListener(InputClass.get());
     }
 
-    public OutputClass(World w) {
-        this.world = w;
+    public OutputClass(World w)
+    {    	 
+        win = null;
+        world = null;
+        backGround = null;
+        arrayList = null;
+        obj = null;
+        exitCondition = false;
+        graphics = null;
+        graphics2D = null;
+        container = null;
+        world = w;        
     }
 
-    public Canvas setupCanvas() {
-        this.addKeyListener(InputClass.get());
-        this.setBounds(0, 0, this.world.getScreenX(), this.world.getScreenY());        
-        this.setIgnoreRepaint(true);
-        this.createBufferStrategy(2);
-        this.strategy = this.getBufferStrategy();
-        this.graphics = this.strategy.getDrawGraphics();
-        this.graphics2D = (Graphics2D)this.graphics;
-        this.requestFocus();
+    public Canvas setupCanvas()
+    {
+        addKeyListener(InputClass.get());
+        //addMouseListener(MouseInput.getMouseInput());
+        setBounds(0, 0, world.getScreenX(), world.getScreenY());
+        setIgnoreRepaint(true);        
+        createBufferStrategy(2);
+        strategy = getBufferStrategy();        
+        graphics = strategy.getDrawGraphics();
+        graphics2D = (Graphics2D)graphics;        
+        requestFocus();
+        /*backGround = world.getSpriteMan().loadSprite("cro/j2d/pics/background.png","background");
+        backGround.setImage( backGround.getImage().getScaledInstance(world.getScreenX(),world.getScreenY(),Image.SCALE_FAST));
+        backGround.getImage().setAccelerationPriority(1);*/
         return this;
+    }    
+    /*
+     * Compairs the systems list of support modes with the world's requested mode  
+     */
+    
+    private DisplayMode getValidDisplay(){
+    	System.out.println("Testing requested display mode....");
+    	DisplayMode[] preferredDisplayModes = 
+    		new DisplayMode[]
+    		                {
+                        new DisplayMode(world.getScreenX(), world.getScreenY(),32,120),
+                        new DisplayMode(world.getScreenX(), world.getScreenY(),16,120),
+                        new DisplayMode(world.getScreenX(), world.getScreenY(),8,120),
+    			new DisplayMode(world.getScreenX(), world.getScreenY(),32,75),
+    			new DisplayMode(world.getScreenX(), world.getScreenY(),16,75),
+    			new DisplayMode(world.getScreenX(), world.getScreenY(),8,75),
+                        new DisplayMode(world.getScreenX(), world.getScreenY(),32,60),
+    			new DisplayMode(world.getScreenX(), world.getScreenY(),16,60),
+    			new DisplayMode(world.getScreenX(), world.getScreenY(),8,60)
+    			};
+    	
+    	
+    	DisplayMode sModes[] = this.getDrawGraphics().getDeviceConfiguration().getDevice().getDisplayModes(); //supported modes
+    	
+    	
+    	for (int i=0; i<preferredDisplayModes.length;i++){
+    		for(int j=0; j<sModes.length;j++){
+    			if(preferredDisplayModes[i].getWidth() == sModes[j].getWidth())
+    				if ( preferredDisplayModes[i].getHeight() == sModes[j].getHeight())
+    					if (preferredDisplayModes[i].getBitDepth() == sModes[j].getBitDepth())
+    						if (preferredDisplayModes[i].getRefreshRate() == sModes[j].getRefreshRate())
+    						{
+    							System.out.println("Using Resolution");
+    							System.out.println("Width \t"+sModes[j].getWidth());
+    							System.out.println("Height\t"+sModes[j].getHeight());
+    							System.out.println("BitDepth\t"+sModes[j].getBitDepth());
+    							System.out.println("Refreshrate\t"+sModes[j].getRefreshRate());
+    							return sModes[j];
+    						}
+    		}
+    	}
+    	return null;
+    }
+    public boolean goFullscreen()    
+    {                
+    	
+    	if (!FULLSCREEN)return false;
+    	DisplayMode dM = getValidDisplay();
+    	//Trying to get to fullscreen
+    	if (dM == null) return false; // if a vald mode was not found
+    	if (!this.getDrawGraphics().getDeviceConfiguration().getDevice().isFullScreenSupported()){            
+    		return false;
+    	}
+        GraphicsDevice gD = this.getDrawGraphics().getDeviceConfiguration().getDevice();        
+    	gD.setFullScreenWindow(world.getOutput().getContainer());
+        //dM = new DisplayMode(world.getScreenX(), world.getScreenY(), 16, 60 );
+        graphics2D.getDeviceConfiguration().getDevice().setDisplayMode(dM);
+        //End of full screen attempt.
+    	return true;
+    }
+    public void exitFullscreen(){
+        if(!FULLSCREEN) return;
+    	this.getDrawGraphics().getDeviceConfiguration().getDevice().setFullScreenWindow(null);
+        this.setPreferredSize(new Dimension(world.getScreenX(), world.getScreenY()));
+        this.getContainer().dispose();
+        this.getContainer().setUndecorated(false);
+        this.getContainer().setIgnoreRepaint(true);
+        this.getContainer().setVisible(true);
+        this.getContainer().pack();        
     }
 
-    public void setupFrame(String strWinName) {
-        JFrame container = new JFrame(strWinName);
+    public void setupFrame(String strWinName)
+    {
+        container = new JFrame(strWinName);
         JPanel panel = (JPanel)container.getContentPane();
-        panel.setPreferredSize(new Dimension(this.world.getScreenX(), this.world.getScreenY()));
+        panel.setPreferredSize(new Dimension(world.getScreenX(), world.getScreenY()));
         panel.setLayout(null);
-        //https://stackoverflow.com/questions/45722445/how-to-set-jframe-to-full-screen
-        //container.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //container.setUndecorated(true);
-        //**********************************************************************
-        container.pack();
+             
         container.setResizable(false);
-        container.setVisible(true);        
-        container.addWindowListener(new WindowAdapter(){
+        
+        if (FULLSCREEN){
+            container.dispose();
+            container.setUndecorated(true);
+        } else{
+            container.pack();
+        }        
+        
+        container.setIgnoreRepaint(true);
+        container.setVisible(true);    
+        container.addWindowListener(new WindowAdapter() {
 
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
+            public void windowClosing(WindowEvent e)
+            {
+                StartHere.infLoop = false;
+                //world.exitGame();
             }
-        });
+
+            //final OutputClass thisClass = OutputClass.this;
+            //super();
+            
+        });        
         panel.add(this);
+        //setups the drawing canvas 
+        setupCanvas();
     }
 
-    public Graphics2D getDrawGraphics() {
-        return (Graphics2D)this.strategy.getDrawGraphics();
+    public Graphics2D getDrawGraphics()
+    {
+        return (Graphics2D)strategy.getDrawGraphics();
     }
 
-    public void render(Vector vec) {
-        Obj obj = null;
-        vec.size();
-        for (int i = 0; i < vec.size(); ++i) {
-            obj = (Obj)vec.get(i);
-            obj.draw(this.graphics);
+    public void render(Vector vec)
+    {
+        synchronized (vec){
+            Obj obj = null;
+            int sz = vec.size();
+            //vec.size();
+            //getDrawGraphics().setXORMode(Color.RED);
+            for(int i = 0; i < sz; i++)
+            {
+                obj = (Obj)vec.get(i);
+                obj.draw(graphics);
+            }
         }
+
     }
 
-    public void present() {
-        this.strategy.show();
+    public void render(Graphics g, Sprite sp, double x, double y)
+    {        
+        sp.draw(g, x, y);
     }
 
-    public boolean clearGraphics() {
-        this.graphics2D = (Graphics2D)this.graphics;
-        this.graphics2D.setColor(Color.BLACK);
-        this.graphics2D.fillRect(0, 0, this.world.getScreenX(), this.world.getScreenY());
-        this.graphics2D.dispose();
-        this.graphics = this.strategy.getDrawGraphics();
+    public void render(Graphics g, String str, double x, double y)
+    {
+        graphics2D = (Graphics2D)graphics;
+        graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+        graphics2D.drawString(str, (int)x, (int)y);
+    }
+
+    public void present()
+    {   
+        strategy.show();
+    }
+
+    public boolean clearGraphics()
+    {        
+        graphics2D = (Graphics2D)graphics;        
+        graphics2D.setColor(Color.BLACK);
+        //graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_SPEED);
+        graphics2D.fillRect(0, 0, world.getScreenX(), world.getScreenY());        
+        //backGround.draw(graphics2D,0,0);
+        //graphics2D.dispose();
+        graphics = strategy.getDrawGraphics();
+        return true;
+    }
+    
+    public boolean clearGraphicsBackground()
+    {
+        graphics2D = (Graphics2D)graphics;
+        //graphics2D.setColor(Color.BLACK);
+        //graphics2D.fillRect(0, 0, world.getScreenX(), world.getScreenY());
+        backGround.draw(graphics2D,0,0);
+        //graphics2D.dispose();
+        graphics = strategy.getDrawGraphics();
         return true;
     }
 
-    public boolean clearPlayableGraphics() {
-        this.graphics2D = (Graphics2D)this.graphics;
-        this.graphics2D.setColor(Color.BLACK);
-        this.graphics2D.fillRect(this.world.getPlayableX(), this.world.getPlayableY(), this.world.getPlayableXMax(), this.world.getPlayableYMax());
-        this.graphics2D.dispose();
-        this.graphics = this.strategy.getDrawGraphics();
+    public boolean clearPlayableGraphics()
+    {        
+        graphics2D = (Graphics2D)graphics;
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.fillRect(world.getPlayableX(), world.getPlayableY(), world.getPlayableXMax(), world.getPlayableYMax());
+        
+        //graphics2D.dispose();
+        graphics = strategy.getDrawGraphics();
         return true;
     }
 
+    /**
+	 * @return Returns the graphics2D.
+	 */
+	public Graphics2D getGraphics2D() {
+		return graphics2D;
+	}
+
+	/**
+	 * @return Returns the container.
+	 */
+	public JFrame getContainer() {
+		return container;
+	}	
 }
-

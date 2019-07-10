@@ -7,12 +7,12 @@ package cro.j2d.games.cuc.scroller;
 
 /**
  *
- * @author ts-yohance.mcdonald
+ * @author Yohance
  */
 public class LogicThread extends Thread {
 
     World world = null;
-    long logicSpeed = 0L;
+    double logicSpeed = 0L;
     int tmp_int = 0;
     PlayerObj pObj = null;
     boolean stopMe = false;
@@ -27,12 +27,13 @@ public class LogicThread extends Thread {
         this.stopMe = true;
     }
 
+    @Override
     public void run() {
 
         while (!this.stopMe) {
-            if (System.currentTimeMillis() >= logicSpeed) {
-                logicSpeed = System.currentTimeMillis() + 16L;
-                this.world.doLogicUpdate();
+            if (System.nanoTime() >= logicSpeed) {
+                logicSpeed = System.nanoTime() + StartHere.logic_rate_delta;
+                world.doLogicUpdate();
                 tmp_int = pObj.getScore() + 1;
                 pObj.setScore(tmp_int);
                 try {

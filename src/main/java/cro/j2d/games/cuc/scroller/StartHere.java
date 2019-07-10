@@ -1,147 +1,267 @@
-/*
- * Decompiled with CFR 0.139.
- */
+// Decompiled by DJ v3.9.9.91 Copyright 2005 Atanas Neshkov  Date: 6/17/2006 7:44:56 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   StartHere.java
+
 package cro.j2d.games.cuc.scroller;
 
 import java.applet.Applet;
 import java.awt.BorderLayout;
+import java.io.PrintStream;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 
-public class StartHere
-extends Applet
-implements Runnable {
-    private static final long serialVersionUID = 3904678262931405113L;
-    String dbHost = "free-mysql.BizHostNet.com";
-    String dbPort = "3306";
-    String dbName = "1109083684";
-    String dbUser = "1109083684";
-    String dbPass = "12345";
-    boolean gameEnd = false;
-    World world = null;
+// Referenced classes of package cro.j2d.games.cuc.scroller:
+//            World, OutputClass, SfxMan, PlayerObj
+
+public class StartHere extends Applet
+    implements Runnable
+{
+    //Timings
+    static double desired_framerate = 120;
+    static double desired_logic_rate = 60;
+    static double framerate_delta = (1000000000/desired_framerate);        
+    static double logic_rate_delta = (1000000000/desired_logic_rate);
+    //**********************************************************************
     LogicThread logicThread = null;
 
-    public void init() {
+    public StartHere()
+    {
+        System.setProperty("sun.java2d.transaccel", "True");
+        // System.setProperty("sun.java2d.trace", "timestamp,log,count");
+        //System.setProperty("sun.java2d.opengl", "True");
+        System.setProperty("sun.java2d.d3d", "True");
+        System.setProperty("sun.java2d.ddforcevram", "True");
+        //System.getProperty()
+        gameEnd = false;
+        world = null;
+        mainThread=null;
     }
 
-    public void destroy() {
-        System.exit(0);
+    public void init()
+    {
     }
 
-    public void start() {
-        Thread th = new Thread(this);
-        th.start();
+    public void destroy()
+    {
+       stop();
     }
 
-    public void stop() {
-        System.exit(0);
+    public void start()
+    {
+       mainThread = new Thread(this);//Thread.currentThread();
+       mainThread.start();
     }
 
-    public void setupApp() {
-        this.world.getOutput().setupFrame("RushDown [O_o] S.E.(ALpha by Yohance McDonald)");
-        this.world.getOutput().setupCanvas();
+    public void stop()
+    {
+        //mainThread.stop();
+        //System.exit(0);
+        infLoop = false;
     }
 
-    public void run() {
+    public void setupApp()
+    {
+    	InputClass.setworld(world); // this has tobe done here in a non-static function
+        world.setGame(this); // this has to be done here in a non-static function
+    	world.getOutput().setupFrame("RushDown [O_o] S.E.(ALpha by Yohance McDonald)");
+        world.getOutput().setEnabled(true);
+        if (!world.getOutput().goFullscreen()){
+        	JOptionPane.showMessageDialog(this, "Could not enter into fullscreen exclusive mode\n using decorating window...","Warning :(",  1);
+        }
+        //world.getOutput().setupFrame("RushDown [O_o] S.E.(ALpha by Yohance McDonald)");
+        //world.getOutput().setupCanvas();
+    }
+
+    public void run()
+    {
+        
         StartHere game = new StartHere();
-        game.world = new World();
-        game.world.build();
-        this.setLayout(new BorderLayout());
-        this.add("Center", game.world.getOutput());
+        game.world = new World(this);
+        game.world.build();        
+        setLayout(new BorderLayout());
+        add("Center", game.world.getOutput());
         game.world.getOutput().setupCanvas();
-        this.setVisible(true);
-        this.setEnabled(true);
-        boolean infLoop = true;
-        while (infLoop) {
-            game.gameLoop();
-            game.world.reset();
+        setVisible(true);
+        setEnabled(true);
+        StartHere.infLoop = true;
+        while(StartHere.infLoop) 
+        {
+            if (game.gameLoop()){
+                game.world.reset();                
+            }
+            else {
+                if(game.exitGame()) break; else StartHere.infLoop = true;
+            }
+                
         }
     }
 
-    public static void main(String[] arg) {
+    public static void main(String arg[])
+    {
         StartHere game = new StartHere();
-        game.world = new World();
+        game.world = new World(game);
         game.world.build();
+        //********** thread creation *****************
+        Thread sd = new Thread(game.world.getSfxMan());
+        sd.setName("rushdown Sound Thread");
+        sd.setDaemon(true);
+        sd.setPriority(Thread.MAX_PRIORITY);
+        sd.start();
+        //********************************************
+        game.world.loadData();
+        game.world.reset();        
+        
         game.setupApp();
-        boolean infLoop = true;
-        while (infLoop) {
-            game.gameLoop();
-            game.world.reset();
+        StartHere.infLoop = true;
+        while(StartHere.infLoop) 
+        {
+            if (game.gameLoop()){
+                game.world.reset();                
+            }
+            else {
+                if(game.exitGame()) break; else StartHere.infLoop = true;
+            }
         }
+        System.exit(0);
     }
-    
-    private boolean gameLoop() {
-        this.world.getSfxMan().loadClip("cro/sounds/loops/fruity_loop.au", "fanfare_");
+
+    private boolean gameLoop()
+    {        
+        world.getSfxMan().loadClip("cro/sounds/loops/fruity_loop.au", "fanfare_");
+        long lastLoopTime1 = 0L;
+        long lastLoopTime2 = 0L;
         long lastLoopTime = 0L;
-        long delta = System.currentTimeMillis();
-        int loop = 0;
-        double fps = 0.0;
-        boolean i = false;
+        long lastLoopTime_count = 1L;
+        long lastLoopTimeAvg = 0L;
+        
+        long timer = 0L;
+        long timer_delta = 0L;
+        long last_timer = 0L;
+        long delta = System.nanoTime();
+        int frames = 0;
+        double fps = 0.0D;
+        int i = 0;
         int music_count = 0;
-        long logicSpeed = 0L;
-        long refreshRate = 0L;
+        double  logicSpeed = 0L;
+        double refreshRate = 0L;
         int tmp_int = 0;
-        Object obj = null;
-        PlayerObj pObj = (PlayerObj)this.world.getVecPlayer().get(0);
-        this.world.msgPause("'Ctrl' to fire and arrow key to move", "fruity_loop");
-        this.world.getSfxMan().loopClip("fruity_loop");
+        Obj obj = null;
+        PlayerObj pObj = (PlayerObj)world.getVecPlayer().get(0);
+        if (!world.msgPause("'Ctrl' to fire and arrow key to move", "fruity_loop")){
+            return false; //return false to exit game if pause func return false;
+        }
+        world.getSfxMan().loopClip("fruity_loop");
         logicThread = new LogicThread(this.world);
         logicThread.setName("RushdownLogicThread");
         logicThread.start();
-        while (!this.gameEnd) {
-            if (System.currentTimeMillis() >= delta) {
-                fps = (long)loop * (System.currentTimeMillis() / delta);
-                delta = System.currentTimeMillis() + 1000L;
-                loop = 0;
-                if (music_count++ > 10) {
+        while(!gameEnd)
+        {            
+            if(System.nanoTime() >= timer_delta){    
+                lastLoopTime1 = System.nanoTime();
+                fps = frames/((lastLoopTime1-last_timer)/1000000000);                
+                frames = 0;                
+                
+                lastLoopTimeAvg = (long)((lastLoopTime1-last_timer)/lastLoopTime_count);
+                lastLoopTime_count = 0;
+                
+                last_timer = System.nanoTime();
+                timer_delta = last_timer+1000000000;
+            }
+            
+            if(System.nanoTime() >= delta)
+            {
+                
+                delta = System.nanoTime()+ 1000000000L; 
+                if(music_count++ > 10)
+                {
                     music_count = 0;
-                    this.world.moreEnemies(6);
+                    world.moreEnemies(20);
                 }
             }
-            /*if (System.currentTimeMillis() >= logicSpeed) {
-                logicSpeed = System.currentTimeMillis() + 16L;
-                this.world.doLogicUpdate();
+            /*if(System.nanoTime()>= logicSpeed)
+            {
+                logicSpeed = System.nanoTime() + logic_rate_delta;
+                world.doLogicUpdate();
                 tmp_int = pObj.getScore() + 1;
                 pObj.setScore(tmp_int);
             }*/
-            if (System.currentTimeMillis() >= refreshRate) {
-                refreshRate = System.currentTimeMillis() + 8L;
-                this.world.getOutput().clearGraphics();
-                this.world.getOutput().render(this.world.getVecDebris());
-                this.world.getOutput().render(this.world.getVecDebris2());
-                this.world.getOutput().render(this.world.getVecPlayer());
-                this.world.getOutput().render(this.world.getVecEnemies());
-                this.world.getOutput().render(this.world.getVecEnemyShots());
-                this.world.getOutput().render(this.world.getVecPlayerShots());
-                this.world.doHud(pObj, " " + fps);
-                this.world.getOutput().present();
-                ++loop;
+            if( System.nanoTime() >= refreshRate)//refreshRate)
+            {
+                refreshRate = System.nanoTime()+ framerate_delta;//16666666L;
+                world.getOutput().clearGraphics();
+                world.getOutput().render(world.getVecDebris());
+                world.getOutput().render(world.getVecDebris2());
+                world.getOutput().render(world.getVecPlayer());
+                world.getOutput().render(world.getVecEnemies());
+                world.getOutput().render(world.getVecEnemyShots());
+                world.getOutput().render(world.getVecPlayerShots());
+                world.doHud(pObj, " " + fps+" looptime:"+(lastLoopTimeAvg));
+                world.getOutput().present();
+                frames++;
             }
-            if (pObj.getHealth() <= 0) {
-                this.world.getSfxMan().stopClip("fruity_loop");
-                this.world.getSfxMan().stopClip("s_finish");
-                this.world.msgPause("GAME OVER :(.....Score is " + pObj.getScore(), "rave");
-                if (pObj.getScore() > this.world.getHighScore()) {
-                    this.world.setHighScore(pObj.getScore());
-                    this.world.getSfxMan().playClip("fanfare");
-                    this.world.name = JOptionPane.showInputDialog(this, "enter you name", "New High Score :)", 1);
-                    this.world.updateDBInfo(this.dbHost, this.dbPort, this.dbName, this.dbUser, this.dbPass);
+            if(pObj.getHealth() <= 0)
+            {
+                world.getSfxMan().stopClip("fruity_loop");
+                world.getSfxMan().stopClip("s_finish");
+                world.msgPause("GAME OVER :(.....Score is " + pObj.getScore(), "rave");
+                if(pObj.getScore() > world.getHighScore())
+                {
+                    world.setHighScore(pObj.getScore());
+                    world.getSfxMan().playClip("fanfare");
+                    world.name = JOptionPane.showInputDialog(this, "enter you name", "New High Score :)", 1);
+                    world.updateDBInfo();
                 }
                 return true;
-            }                   
-            try {
-                //Thread.sleep(1L);
-                Thread.yield();
             }
-            catch (Exception e) {
-                System.out.println(" exception in the sleep 'try method'");
+            try
+            {
+                Thread.yield();//sleep(0, 100);
             }
+            catch(Exception e)
+            {
+                System.out.println(" exception in the sleep 'try method'"+e.toString());
+            }
+            if (!StartHere.infLoop) {
+                return false;
+            }            
+            lastLoopTime_count++;
         }
         logicThread.StopMe();
         logicThread.stop();
-        while(logicThread.isAlive()){
-            //wait for logic thread to die
+        try{
+            logicThread.join();
+        } catch(Exception e){
+            System.out.println("main thread was waiting on thread to finish" + e.toString());
         }
+        /*while(logicThread.isAlive()){
+            //wait for logic thread to die
+        }*/
         return false;
     }
-}
+    public boolean exitGame(){
+        world.getOutput().setEnabled(false);      
+        world.getOutput().setupCanvas();
+    	world.getOutput().exitFullscreen();        
+    	switch(JOptionPane.showConfirmDialog(world.getOutput(),"Do you really want to exit?","Exit Confirmation", JOptionPane.YES_NO_OPTION))
+    	{
+    	case 0: 
+            //System.exit(0);
+            return true;
+    	default:;break;
+    	}
+        this.infLoop = true; // turn back on infinite loop;
+        //world.setGame(this); // this has to be done here in a non-static function
+    	//world.getOutput().setupFrame("RushDown [O_o] S.E.(ALpha by Yohance McDonald)");
+        world.getOutput().setupCanvas();
+        world.getOutput().setEnabled(true);
+    	world.getOutput().goFullscreen();
+        return false;
+    }
 
+    private static final long serialVersionUID = 0x3630343138373939L;    
+    boolean gameEnd;
+    World world;
+    volatile Thread mainThread;
+    public static volatile boolean infLoop = true;
+}

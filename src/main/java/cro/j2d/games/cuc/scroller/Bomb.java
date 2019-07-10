@@ -1,54 +1,73 @@
-/*
- * Decompiled with CFR 0.139.
- */
+// Decompiled by DJ v3.9.9.91 Copyright 2005 Atanas Neshkov  Date: 6/17/2006 7:44:56 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   Bomb.java
+
 package cro.j2d.games.cuc.scroller;
 
-import cro.j2d.games.cuc.scroller.Obj;
-import cro.j2d.games.cuc.scroller.Sprite;
-import cro.j2d.games.cuc.scroller.World;
+import cro.j2d.games.cuc.scroller.pixelmap.Sprite;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.io.PrintStream;
 import java.util.Vector;
 
-public class Bomb
-extends Obj {
-    public Bomb(Vector vec, Sprite s, int x_tmp, int y_tmp, World w) {
+// Referenced classes of package cro.j2d.games.cuc.scroller:
+//            Obj, World, Sprite
+
+public class Bomb extends Obj
+{
+
+    public Bomb(Vector vec, Sprite s, int x_tmp, int y_tmp, World w)
+    {
         super(vec, null, x_tmp, y_tmp, w);
-        this.width = 20;
-        this.height = 2;
-        this.x = x_tmp;
-        this.y = y_tmp;
-        this.xs = this.width;
-        this.ys = 0.0;
+        width = 20;
+        height = 2;
+        x = x_tmp;
+        y = y_tmp;
+        xs = width;
+        ys = 0.0D;
     }
 
-    public void reset() {
-        this.vector.remove(this);
+    public void reset()
+    {
+        removeFromScreen();
+        vector.remove(this);
+    }
+    
+    public void removeFromScreen(){
+        super.removeFromScreen();
     }
 
-    private void isVisible() {
-        if (this.x < (double)this.objWorld.getPlayableXSize() && this.x + (double)this.width > 0.0 && this.y + (double)this.height > 0.0 && this.y < (double)this.objWorld.getPlayableYSize()) {
-            this.visible = true;
-        } else {
-            this.reset();
+    private void isVisible()
+    {
+        if(x < (double)objWorld.getPlayableXSize() && x + (double)width > 0.0D && y + (double)height > 0.0D && y < (double)objWorld.getPlayableYSize())
+        {
+            visible = true;
+        } else
+        {
+            reset();
             System.out.println("removed Laser....");
         }
     }
 
-    public void doLogic() {
-        this.move();
+    public void doLogic()
+    {
+        move();
     }
 
-    public void draw(Graphics g) {
-        if (!this.visible) {
+    public void draw(Graphics g)
+    {
+        if(!visible)
+        {
+            return;
+        } else
+        {
+            g.setColor(Color.CYAN);
+            g.fill3DRect((int)x, (int)y, (int)width, (int)height, true);
             return;
         }
-        g.setColor(Color.CYAN);
-        g.fill3DRect((int)this.x, (int)this.y, this.width, this.height, true);
     }
 
-    public void collideWith(Obj obj) {
+    public void collideWith(Obj obj)
+    {
     }
 }
-

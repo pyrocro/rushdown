@@ -1,144 +1,167 @@
-/*
- * Decompiled with CFR 0.139.
- */
+// Decompiled by DJ v3.9.9.91 Copyright 2005 Atanas Neshkov  Date: 6/17/2006 7:44:56 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   Enemy2Obj.java
+
 package cro.j2d.games.cuc.scroller;
 
-import cro.j2d.games.cuc.scroller.Enemy3Obj;
-import cro.j2d.games.cuc.scroller.Laser;
-import cro.j2d.games.cuc.scroller.Obj;
-import cro.j2d.games.cuc.scroller.Particle;
-import cro.j2d.games.cuc.scroller.Pickup1Obj;
-import cro.j2d.games.cuc.scroller.PlayerObj;
-import cro.j2d.games.cuc.scroller.Sfx;
-import cro.j2d.games.cuc.scroller.Sprite;
-import cro.j2d.games.cuc.scroller.World;
+import cro.j2d.games.cuc.scroller.pixelmap.Sprite;
 import java.awt.Graphics;
 import java.util.Vector;
 
-public class Enemy2Obj
-extends Obj {
-    public Enemy2Obj(Vector vec, Sprite s, int x_tmp, int y_tmp, World w) {
+// Referenced classes of package cro.j2d.games.cuc.scroller:
+//            Obj, World, Sprite, Particle, 
+//            PlayerObj, Enemy3Obj, Sfx, Pickup1Obj, 
+//            Laser
+
+public class Enemy2Obj extends Enemy
+{
+
+    public Enemy2Obj(Vector vec, Sprite s, int x_tmp, int y_tmp, World w)
+    {
         super(vec, s, x_tmp, y_tmp, w);
-        this.reset();
+        reset();
     }
 
-    public void reset() {
-        this.x = (int)((double)this.objWorld.getPlayableXSize() + (double)this.objWorld.getPlayableXSize() * Math.random());
-        this.y = this.objWorld.getPlayableY() + (int)((double)(this.objWorld.getPlayableYSize() - this.height) * Math.random());
-        this.xs = 0.0;
-        this.ys = 0.0;
-        this.dxs = -(this.width / 25);
-        this.dys = 0.0;
-        this.health = 100;
-        this.worth = 2000;
-        this.xa = 2.0;
-        this.ya = 0.25;
+    public void reset()
+    {        
+        x = (int)(((double)objWorld.getPlayableXSize()) + (objWorld.getPlayableXSize() * Math.random()));
+        y = objWorld.getPlayableY() + (int)((double)(objWorld.getPlayableYSize() - height) * Math.random());
+        xs = 0.0D;
+        ys = 0.0D;
+        dxs = -(width / 60) - (5*Math.random() );//-(width / 5);
+        dys = 0.0D;
+        health = 100;
+        worth = 2000;
+        xa = 1D;
+        ya = 0.25D;
+        density = 10D;
+        mass = (double)(sprite.getHeight() * sprite.getWidth()) * density;
+        removeFromScreen();
+    }
+    
+    private void isVisible()
+    {
+        if(x < (double)objWorld.getPlayableXSize() && x > 0.0D)
+            visible = true;
+        if(x + (double)width < 0.0D)
+            reset();
     }
 
-    private void isVisible() {
-        if (this.x < (double)this.objWorld.getPlayableXSize() && this.x > 0.0) {
-            this.visible = true;
-        }
-        if (this.x + (double)this.width < 0.0) {
-            this.reset();
-        }
-    }
-
-    public void doLogic() {
+    public void doLogic()
+    {
         Particle ex = null;
-        this.move();
-        for (int i = 0; i < 1; ++i) {
-            ex = new Particle(this.vector, null, (int)this.x + this.width - 8, (int)(this.y + (double)(this.height / 2) - 6.0 + Math.random() * 6.0), this.objWorld);
-            ex.setColorR(0.2f);
-            ex.setColorG(0.2f);
-            ex.setColorB(0.4f);
+        move();
+        for(int i = 0; i < 1; i++)
+        {
+            ex = new Particle(vector, null, ((int)x + width) - 8, (int)(((y + (double)(height / 2)) - 6D) + Math.random() * 6D), objWorld);
+            ex.setColorR(0.2F);
+            ex.setColorG(0.2F);
+            ex.setColorB(0.4F);
             ex.setHealth(5);
-            ex.setXs(0.0);
+            ex.setXs(0.0D);
             ex.setHeight(8);
             ex.setWidth(30);
-            ex.setCRate(-0.04f);
+            ex.setCRate(-0.04F);
         }
-    }
 
-    public void collideWith(Obj obj) {
-        if (obj instanceof PlayerObj) {
-            obj.setXs(obj.getXs() - 5.0);
-            obj.setX(this.x - (double)obj.width);
+    }
+    
+    public boolean collisionCheck(Obj other)
+    {
+    	if ( other instanceof Laser || other instanceof PlayerObj || other instanceof Enemy)    	
+    	return super.collisionCheck(other);
+    	return false;
+    }
+    
+    public void collideWith(Obj obj)
+    {
+        if(obj instanceof PlayerObj)
+        {
+            obj.setXs(obj.getXs() - 5D);
+            obj.setX(x - obj.width);
             obj.setHealth(obj.getHealth() - 25);
             return;
-        }        
-        if (obj instanceof Enemy2Obj || obj instanceof Enemy3Obj) {
-            obj.setDxs(obj.dxs * 1.2);
-            this.setDxs(this.dxs * 0.8);
-            while (Obj.collisionCheck(obj, this)) {
-                obj.x -= 1.0;
-            }
+        }
+        if(obj instanceof Enemy)
+        {
+            //obj.setDxs(obj.dxs * 1.2D);
+            //setDxs(dxs * 0.80000000000000004D);
+            //while(collisionCheck(obj, this)) {}
+            this.x = this.prevX; this.y = this.prevY;
+            //obj.x = this.x - obj.width;
             return;
         }
     }
 
-    public void doExplosion() {
-        int i;
-        Particle ex;
-        for (i = 0; i < 40; ++i) {
-            ex = new Particle(this.vector, null, (int)(this.x + (double)(this.width / 1) * Math.random()), (int)(this.y + (double)(this.height / 2)) + (int)((double)(this.height / 2) * Math.random()), this.objWorld);
-            ex.setDxs(this.xs * Math.random() * -1.5);
-            ex.setDys(this.ys * Math.random() * 1.5);
+    public void doExplosion()
+    {
+        for(int i = 0; i < 2; i++)
+        {
+            Particle ex = new Particle(vector, null, (int)(x + (double)(width / 2) * Math.random()), (int)(y + (double)(height / 4)) + (int)((double)(height / 2) * Math.random()), objWorld);
+            ex.setDxs(xs * Math.random() * -1.5D);
+            ex.setDys(ys * Math.random() * 1.5D);
             ex.setHealth(30);
-            ex.setColorR(0.75f);
-            ex.setColorG(0.75f);
-            ex.setColorB(1.0f);
-            ex.setWidth(2 + (int)(6.0 * Math.random()));
-            ex.setHeight(2 + (int)(6.0 * Math.random()));
+            ex.setColorR(0.75F);
+            ex.setColorG(0.75F);
+            ex.setColorB(1.0F);
+            ex.setWidth(2 + (int)(6D * Math.random()));
+            ex.setHeight(2 + (int)(6D * Math.random()));
         }
-        for (i = 0; i < 60; ++i) {
-            ex = new Particle(this.vector, null, (int)(this.x + (double)(this.width / 1) * Math.random()), (int)(this.y + (double)(this.height / 2)) + (int)((double)this.height * Math.random()), this.objWorld);
-            ex.setDxs(this.xs);
-            if (Math.random() > 0.5) {
-                ex.setDys(2.0 * Math.random());
-            } else {
-                ex.setDys(2.0 * Math.random() * -1.0);
-            }
+
+        for(int i = 0; i < 4; i++)
+        {
+            Particle ex = new Particle(vector, null, (int)(x + (double)(width / 2) * Math.random()), (int)(y + (double)(height / 4)) + (int)((double)height * Math.random()), objWorld);
+            ex.setDxs(xs);
+            if(Math.random() > 0.5D)
+                ex.setDys(2D * Math.random());
+            else
+                ex.setDys(2D * Math.random() * -1D);
             ex.setHealth(90);
-            ex.setColorR(0.5f);
-            ex.setColorG(1.0f);
-            ex.setColorB(1.0f);
-            ex.setWidth(3 + (int)(4.0 * Math.random()));
-            ex.setHeight(3 + (int)(4.0 * Math.random()));
+            ex.setColorR(0.5F);
+            ex.setColorG(1.0F);
+            ex.setColorB(1.0F);
+            ex.setWidth(3 + (int)(4D * Math.random()));
+            ex.setHeight(3 + (int)(4D * Math.random()));
         }
-        this.sfx_die.play();
+
+        for(int i = 0; i < 5; i++)
+        {
+            Particle ex = new Particle(vector, null, (int)(x + (double)(width / 2) * Math.random()), (int)(y + (double)(height / 3)) + (int)((double)(height / 3) * Math.random()), objWorld);
+            ex.setDxs(dxs * (4D * Math.random()) * -1D);
+            ex.setHealth(20);
+            ex.setColorR(0.7F);
+            ex.setColorG(1.0F);
+            ex.setColorB(1.0F);
+            ex.setWidth(5 + (int)(4D * Math.random()));
+            ex.setHeight(5 + (int)(4D * Math.random()));
+        }        
+        sfx_die.play();
         Pickup1Obj.createHPPickup(1, this);
         Particle.createPTText(this);
     }
 
-    public void doHit(Obj other) {
-        if (other instanceof Laser) {
-            this.setHealth(this.getHealth() - other.worth);
-            this.angle -= 120;            
+    public void doHit(Obj other)
+    {
+        if(other instanceof Laser){
+            setHealth(getHealth() - other.worth);
+            this.angle -= 120;
         }
-        for (int i = 0; i < 3; ++i) {
-            Particle ex = new Particle(this.vector, null, (int)other.x + other.width, (int)(other.y + (double)(other.height / 2) - 4.0 + Math.random() * 8.0), this.objWorld);
-            ex.setDxs(other.xs / 2.0 * Math.random());
-            if (Math.random() > 0.5) {
-                ex.setDys(3.0 * Math.random());
-            } else {
-                ex.setDys(3.0 * Math.random() * -1.0);
-            }
+        for(int i = 0; i < 1; i++)
+        {
+            Particle ex = new Particle(vector, null, (int)other.x + other.width, (int)(((other.y + (double)(other.height / 2)) - 4D) + Math.random() * 8D), objWorld);
+            ex.setDxs((other.xs / 2D) * Math.random());
+            if(Math.random() > 0.5D)
+                ex.setDys(3D * Math.random());
+            else
+                ex.setDys(3D * Math.random() * -1D);
             ex.setHealth(10);
-            ex.setColorR(0.9f);
-            ex.setColorG(0.9f);
-            ex.setColorB(0.9f);
-            ex.setWidth(2 + (int)(5.0 * Math.random()));
-            ex.setHeight(2 + (int)(5.0 * Math.random()));
+            ex.setColorR(0.9F);
+            ex.setColorG(0.9F);
+            ex.setColorB(0.9F);
+            ex.setWidth(2 + (int)(5D * Math.random()));
+            ex.setHeight(2 + (int)(5D * Math.random()));
         }
-        this.sfx_hit.play();
-    }
-    public void draw(Graphics g) {
-        this.angle = Math.random() * 10;
-        if (this.sprite != null) {
-            this.sprite.draw(g, (int)this.x, (int)this.y, angle);
-            return;
-        }
+        sfx_hit.play();
     }
 }
-

@@ -1,30 +1,46 @@
-/*
- * Decompiled with CFR 0.139.
- */
+// Decompiled by DJ v3.9.9.91 Copyright 2005 Atanas Neshkov  Date: 6/17/2006 7:44:56 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   ObjMan.java
+
 package cro.j2d.games.cuc.scroller;
 
-import cro.j2d.games.cuc.scroller.Obj;
 import java.util.ArrayList;
 
-public class ObjMan {
-    private ArrayList live = new ArrayList();
-    private ArrayList dead = new ArrayList();
-    private ArrayList onScreen = new ArrayList();
+// Referenced classes of package cro.j2d.games.cuc.scroller:
+//            Obj
 
-    public ArrayList getOnScreen() {
-        return this.onScreen;
+public class ObjMan
+{
+
+    public ArrayList getOnScreen()
+    {
+        return onScreen;
     }
 
-    public ArrayList getLiveList() {
-        return this.live;
+    public ArrayList getLiveList()
+    {
+        return live;
     }
 
-    public ArrayList getDeadList() {
-        return this.dead;
+    public ArrayList getDeadList()
+    {
+        return dead;
     }
 
-    public void addObj(Obj obj) {
-        this.live.add(obj);
+    public ObjMan()
+    {
+        live = new ArrayList();
+        dead = new ArrayList();
+        onScreen = new ArrayList();
     }
+
+    public void addObj(Obj obj)
+    {
+        live.add(obj);
+    }
+
+    private ArrayList live;
+    private ArrayList dead;
+    private ArrayList onScreen;
 }
-
