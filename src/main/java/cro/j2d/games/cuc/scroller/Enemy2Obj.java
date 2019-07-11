@@ -106,7 +106,7 @@ public class Enemy2Obj extends Enemy
             ex.setColorG(0.75F);
             ex.setColorB(1.0F);
             ex.setWidth(2 + (int)(6D * Math.random()));
-            ex.setHeight(2 + (int)(6D * Math.random()));
+            ex.setHeight(2 + (int)( 6D * Math.random()));
         }
 
         for(int i = 0; i < 4; i++)
@@ -145,22 +145,23 @@ public class Enemy2Obj extends Enemy
     {
         if(other instanceof Laser){
             setHealth(getHealth() - other.worth);
-            this.angle -= 120;
+            this.angle += 80;
         }
-        for(int i = 0; i < 1; i++)
+        for(int i = 0; i < 10; i++)
         {
             Particle ex = new Particle(vector, null, (int)other.x + other.width, (int)(((other.y + (double)(other.height / 2)) - 4D) + Math.random() * 8D), objWorld);
             ex.setDxs((other.xs / 2D) * Math.random());
             if(Math.random() > 0.5D)
-                ex.setDys(3D * Math.random());
+                ex.setDys(3D * Math.random()*2D);
             else
-                ex.setDys(3D * Math.random() * -1D);
-            ex.setHealth(10);
-            ex.setColorR(0.9F);
+                ex.setDys(3D * Math.random() * -2D);
+            ex.setHealth(40);
+            ex.setColorR(0.6F);
             ex.setColorG(0.9F);
-            ex.setColorB(0.9F);
+            ex.setColorB(0.6F);
             ex.setWidth(2 + (int)(5D * Math.random()));
             ex.setHeight(2 + (int)(5D * Math.random()));
+            ex.setCRate(-0.01F);
         }
         sfx_hit.play();
     }

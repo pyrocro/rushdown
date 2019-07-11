@@ -301,7 +301,7 @@ public class World
         playerObj.setVecShots(getVecPlayerShots());
         playerObj.setSfx_shoot1(getSfxMan().searchForClip("m_laser"));
         getSfxMan().loopClip("level");
-        moreEnemies(30);
+        moreEnemies(10);
     }
 
     public void moreEnemies(int num)

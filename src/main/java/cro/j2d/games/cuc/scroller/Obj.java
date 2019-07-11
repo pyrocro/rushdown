@@ -279,7 +279,17 @@ public abstract class Obj
     public void draw(Graphics g)
     {    	 
     	if(visible = false) return;
-        if(sprite != null) g.drawImage((Image)sprite.getImage(), (int)x, (int)y, null);//sprite.draw(g, (int)x, (int)y);
+        //if(sprite != null) g.drawImage((Image)sprite.getImage(), (int)x, (int)y, null);//sprite.draw(g, (int)x, (int)y);
+        /*if(sprite != null) 
+        {
+            g.drawImage((Image)sprite.getImage(), (int)x, (int)y, null);            
+        }//sprite.draw(g, (int)x, (int)y);
+        */
+        //this.angle += 1;
+        if(angle > 360 ) angle =0;
+        if (this.sprite != null) {
+            this.sprite.draw(g, (int)this.x, (int)this.y,angle);            
+        }
         
         /*if (this.sectorList.size()>0){
         	for ( int i= 0; i<this.sectorList.size();i++){
@@ -289,7 +299,8 @@ public abstract class Obj
         	}
         }*/
         
-    }    
+    }
+     
 
     public void reset()
     {    	
@@ -300,6 +311,7 @@ public abstract class Obj
         xs = -width;
         ys = 0.0D;
         visible = false;
+        angle = 0;
         removeFromScreen();
     }
     public void removeFromScreen(){
