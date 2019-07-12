@@ -87,7 +87,10 @@ public class OutputClass extends Canvas
     			new DisplayMode(world.getScreenX(), world.getScreenY(),8,75),
                         new DisplayMode(world.getScreenX(), world.getScreenY(),32,60),
     			new DisplayMode(world.getScreenX(), world.getScreenY(),16,60),
-    			new DisplayMode(world.getScreenX(), world.getScreenY(),8,60)
+    			new DisplayMode(world.getScreenX(), world.getScreenY(),8,60),
+                        new DisplayMode(world.getScreenX(), world.getScreenY(),32,30),
+    			new DisplayMode(world.getScreenX(), world.getScreenY(),16,30),
+    			new DisplayMode(world.getScreenX(), world.getScreenY(),8,30)
     			};
     	
     	

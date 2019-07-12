@@ -43,7 +43,7 @@ public class World
     private Vector vecEnemyShots;
     private Vector vecPlayerShots;
     final int screenX = 1280;
-    final int screenY = 800;
+    final int screenY = 720;
     private int playableX;
     private int playableY;
     private int playableXSize;
@@ -182,7 +182,7 @@ public class World
             }
             g2D = (Graphics2D)img.getGraphics();            
             g2D.setColor(new Color(0.0F, 0.0F, 0.5F));            
-            g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, transparency));
+            g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, transparency));
             //g2D.rotate(Math.ceil(Math.random()*3),img.getWidth()/2,img.getHeight()/2);
             g2D.fillRect(0, 0, img.getHeight(null), img.getWidth(null));            
             //g2D.setColor(new Color(0.2F, 0.2F, 0.5F,1F));
@@ -281,7 +281,7 @@ public class World
         Obj obj = null;
         Sprite sprite = null;
         SpaceJunkObj spaceJunkObj = null;
-        for(int i = 0; i < (150*7); i++)
+        for(int i = 0; i < (150*5); i++)
         {
             spaceJunkObj = new SpaceJunkObj(getVecDebris2(), null, (int)((double)getPlayableXSize() * Math.random()), (int)((double)getLEVEL_PIXEL_HEIGHT() * Math.random()), this);
             spaceJunkObj.setColorR(0.2F);
@@ -289,11 +289,11 @@ public class World
             spaceJunkObj.setColorB((float)Math.random());
         }
 
-        for(int i = 0; i < 500; i++)
+        for(int i = 0; i < 300; i++)
         {
             spaceJunkObj = new SpaceJunkObj(getVecDebris2(), null, 20, 2, (int)((double)getPlayableXSize() * Math.random()), (int)((double)getLEVEL_PIXEL_HEIGHT() * Math.random()), this);
             spaceJunkObj.setColorR((float)Math.random());
-            spaceJunkObj.setColorG(0.9F);
+            spaceJunkObj.setColorG(0.2F);
             spaceJunkObj.setColorB((float)Math.random());
         }
 

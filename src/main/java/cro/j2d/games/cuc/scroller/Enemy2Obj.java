@@ -96,20 +96,22 @@ public class Enemy2Obj extends Enemy
 
     public void doExplosion()
     {
-        for(int i = 0; i < 2; i++)
+        for(int i = 0; i < 20; i++)
         {
             Particle ex = new Particle(vector, null, (int)(x + (double)(width / 2) * Math.random()), (int)(y + (double)(height / 4)) + (int)((double)(height / 2) * Math.random()), objWorld);
             ex.setDxs(xs * Math.random() * -1.5D);
             ex.setDys(ys * Math.random() * 1.5D);
-            ex.setHealth(30);
+            ex.setHealth(60);
             ex.setColorR(0.75F);
             ex.setColorG(0.75F);
             ex.setColorB(1.0F);
             ex.setWidth(2 + (int)(6D * Math.random()));
             ex.setHeight(2 + (int)( 6D * Math.random()));
+            ex.setCRate(-0.005f);
+            ex.drawFx = Particle.FX_FADE;
         }
 
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < 40; i++)
         {
             Particle ex = new Particle(vector, null, (int)(x + (double)(width / 2) * Math.random()), (int)(y + (double)(height / 4)) + (int)((double)height * Math.random()), objWorld);
             ex.setDxs(xs);
@@ -123,18 +125,20 @@ public class Enemy2Obj extends Enemy
             ex.setColorB(1.0F);
             ex.setWidth(3 + (int)(4D * Math.random()));
             ex.setHeight(3 + (int)(4D * Math.random()));
+            ex.setCRate(-0.002f);
         }
 
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 50; i++)
         {
             Particle ex = new Particle(vector, null, (int)(x + (double)(width / 2) * Math.random()), (int)(y + (double)(height / 3)) + (int)((double)(height / 3) * Math.random()), objWorld);
             ex.setDxs(dxs * (4D * Math.random()) * -1D);
-            ex.setHealth(20);
+            ex.setHealth(90);
             ex.setColorR(0.7F);
             ex.setColorG(1.0F);
             ex.setColorB(1.0F);
             ex.setWidth(5 + (int)(4D * Math.random()));
             ex.setHeight(5 + (int)(4D * Math.random()));
+            ex.setCRate(-0.005f);
         }        
         sfx_die.play();
         Pickup1Obj.createHPPickup(1, this);

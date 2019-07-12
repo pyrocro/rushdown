@@ -97,8 +97,8 @@ public class Laser extends Particle
 
     public void doExplosion()
     {
-        if(Math.random() > 0.80000000000000004D)
-            return;
+        /*if(Math.random() > 0.80000000000000004D)
+            return;*/
         double sp = 0.0D;
         switch((int)(Math.random() * 3D))
         {
@@ -118,7 +118,7 @@ public class Laser extends Particle
             sp = 0.5D;
             break;
         }
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 2; i++)
         {
             Laser ex = new Laser(vector, null, (int)x, (int)(y + Math.random() * 3D), objWorld);
             ex.setWidth((int)(xs * Math.random() * sp));
@@ -126,13 +126,13 @@ public class Laser extends Particle
                 ex.setHeight(1 + (int)(8D * Math.random()));
             else
                 ex.setHeight(-(1 + (int)(8D * Math.random())));
-            ex.setDxs(ex.width/2);
-            ex.setDys(ex.height/2);
+            ex.setDxs(-(ex.width/2));
+            ex.setDys(-(ex.height/2));
             ex.setHealth(90);            
-            ex.setColorR(0.3F);
-            ex.setColorG(1.0F);
+            ex.setColorR(1.0F);
+            ex.setColorG(0.2F);
             ex.setColorB(1.0F);
-            ex.setColor(Color.GREEN);
+            //ex.setColor(Color.GREEN);
             ex.setCRate(-0.01F);
             ex.setType(20);
             ex.laserType = 10;

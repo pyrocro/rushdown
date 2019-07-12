@@ -30,7 +30,7 @@ public class StartHere extends Applet
         System.setProperty("sun.java2d.transaccel", "True");
         // System.setProperty("sun.java2d.trace", "timestamp,log,count");
         //System.setProperty("sun.java2d.opengl", "True");
-        System.setProperty("sun.java2d.d3d", "True");
+        //System.setProperty("sun.java2d.d3d", "True");
         System.setProperty("sun.java2d.ddforcevram", "True");
         //System.getProperty()
         gameEnd = false;
@@ -143,7 +143,7 @@ public class StartHere extends Applet
         double fps = 0.0D;
         int i = 0;
         int music_count = 0;
-        double  logicSpeed = 0L;
+        double logicSpeed = 0L;
         double refreshRate = 0L;
         int tmp_int = 0;
         Obj obj = null;
@@ -159,7 +159,8 @@ public class StartHere extends Applet
         {            
             if(System.nanoTime() >= timer_delta){    
                 lastLoopTime1 = System.nanoTime();
-                fps = frames/((lastLoopTime1-last_timer)/1000000000);                
+                fps = frames/((lastLoopTime1-last_timer)/1000000000);   
+                System.out.println("FPS = " + fps);
                 frames = 0;                
                 
                 lastLoopTimeAvg = (long)((lastLoopTime1-last_timer)/lastLoopTime_count);
@@ -176,7 +177,7 @@ public class StartHere extends Applet
                 if(music_count++ > 10)
                 {
                     music_count = 0;
-                    world.moreEnemies(20);
+                    world.moreEnemies(2);
                 }
             }
             /*if(System.nanoTime()>= logicSpeed)
