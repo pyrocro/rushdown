@@ -99,9 +99,9 @@ public class Enemy2Obj extends Enemy
         for(int i = 0; i < 20; i++)
         {
             Particle ex = new Particle(vector, null, (int)(x + (double)(width / 2) * Math.random()), (int)(y + (double)(height / 4)) + (int)((double)(height / 2) * Math.random()), objWorld);
-            ex.setDxs(xs * Math.random() * -1.5D);
-            ex.setDys(ys * Math.random() * 1.5D);
-            ex.setHealth(60);
+            ex.setDxs(xs / (Math.random() ));
+            ex.setDys(ys / (Math.random() ));
+            ex.setHealth(120);
             ex.setColorR(0.75F);
             ex.setColorG(0.75F);
             ex.setColorB(1.0F);
@@ -114,7 +114,7 @@ public class Enemy2Obj extends Enemy
         for(int i = 0; i < 40; i++)
         {
             Particle ex = new Particle(vector, null, (int)(x + (double)(width / 2) * Math.random()), (int)(y + (double)(height / 4)) + (int)((double)height * Math.random()), objWorld);
-            ex.setDxs(xs);
+            ex.setDxs(-xs*Math.random());
             if(Math.random() > 0.5D)
                 ex.setDys(2D * Math.random());
             else

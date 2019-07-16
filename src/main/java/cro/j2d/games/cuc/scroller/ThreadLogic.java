@@ -9,7 +9,7 @@ package cro.j2d.games.cuc.scroller;
  *
  * @author Yohance
  */
-public class LogicThread extends Thread {
+public class ThreadLogic extends Thread {
 
     World world = null;
     double logicSpeed = 0L;
@@ -17,7 +17,7 @@ public class LogicThread extends Thread {
     PlayerObj pObj = null;
     boolean stopMe = false;
 
-    LogicThread(World w) {
+    ThreadLogic(World w) {
         world = w;
         pObj = (PlayerObj) this.world.getVecPlayer().get(0);
     }

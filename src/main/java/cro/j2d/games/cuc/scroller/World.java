@@ -53,7 +53,18 @@ public class World
     int LEVEL_PIXEL_LENGTH;
     int LEVEL_PIXEL_HEIGHT;
     private GridMan grid;
-    StartHere game;    
+    StartHere game;
+    
+    //Timing and FPS variables 
+    public int frames = 0;
+    public double fps = 0.0D;
+    public long timer = 0L;
+    public long timer_delta = 0L;
+    public long last_timer = 0L;
+    public long delta = System.nanoTime();
+    public long lastLoopTime_count = 1L;
+    public long lastLoopTimeAvg = 0L;
+    
     public World(StartHere prog)
     {
         game = prog;
@@ -415,8 +426,8 @@ public class World
      *  return true to continue game adn false to exit game.
      */    
     public boolean msgPause(String msg, String loop)
-    {        
-        
+    {
+                    
        
         String msg2 = "Press Enter To Continue";
         String msg3 = "RushDown";

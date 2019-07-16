@@ -23,7 +23,8 @@ public class StartHere extends Applet
     static double framerate_delta = (1000000000/desired_framerate);        
     static double logic_rate_delta = (1000000000/desired_logic_rate);
     //**********************************************************************
-    LogicThread logicThread = null;
+    ThreadLogic logicThread = null;
+    ThreadRender renderThread = null;
 
     public StartHere()
     {
@@ -125,22 +126,17 @@ public class StartHere extends Applet
         }
         System.exit(0);
     }
-
+    
     private boolean gameLoop()
     {        
         world.getSfxMan().loadClip("cro/sounds/loops/fruity_loop.au", "fanfare_");
         long lastLoopTime1 = 0L;
         long lastLoopTime2 = 0L;
         long lastLoopTime = 0L;
-        long lastLoopTime_count = 1L;
-        long lastLoopTimeAvg = 0L;
         
-        long timer = 0L;
-        long timer_delta = 0L;
-        long last_timer = 0L;
-        long delta = System.nanoTime();
-        int frames = 0;
-        double fps = 0.0D;
+        
+        
+        
         int i = 0;
         int music_count = 0;
         double logicSpeed = 0L;
@@ -152,28 +148,31 @@ public class StartHere extends Applet
             return false; //return false to exit game if pause func return false;
         }
         world.getSfxMan().loopClip("fruity_loop");
-        logicThread = new LogicThread(this.world);
-        logicThread.setName("RushdownLogicThread");
-        logicThread.start();
+        logicThread = new ThreadLogic(this.world);
+        logicThread.setName("RushdownThreadLogic");
+        logicThread.start();        
+        renderThread = new ThreadRender(this.world);
+        renderThread.setName("RushDownThreadRender");
+        renderThread.start();
         while(!gameEnd)
         {            
-            if(System.nanoTime() >= timer_delta){    
+            if(System.nanoTime() >= world.timer_delta){    
                 lastLoopTime1 = System.nanoTime();
-                fps = frames/((lastLoopTime1-last_timer)/1000000000);   
-                System.out.println("FPS = " + fps);
-                frames = 0;                
+                world.fps = world.frames/((lastLoopTime1-world.last_timer)/1000000000);   
+                System.out.println("FPS = " + world.fps);
+                world.frames = 0;                
                 
-                lastLoopTimeAvg = (long)((lastLoopTime1-last_timer)/lastLoopTime_count);
-                lastLoopTime_count = 0;
+                world.lastLoopTimeAvg = (long)((lastLoopTime1-world.last_timer)/world.lastLoopTime_count);
+                world.lastLoopTime_count = 0;
                 
-                last_timer = System.nanoTime();
-                timer_delta = last_timer+1000000000;
+                world.last_timer = System.nanoTime();
+                world.timer_delta = world.last_timer+1000000000;
             }
             
-            if(System.nanoTime() >= delta)
+            if(System.nanoTime() >= world.delta)
             {
                 
-                delta = System.nanoTime()+ 1000000000L; 
+                world.delta = System.nanoTime()+ 1000000000L; 
                 if(music_count++ > 10)
                 {
                     music_count = 0;
@@ -187,7 +186,7 @@ public class StartHere extends Applet
                 tmp_int = pObj.getScore() + 1;
                 pObj.setScore(tmp_int);
             }*/
-            if( System.nanoTime() >= refreshRate)//refreshRate)
+            /*if( System.nanoTime() >= refreshRate)//refreshRate)
             {
                 refreshRate = System.nanoTime()+ framerate_delta;//16666666L;
                 world.getOutput().clearGraphics();
@@ -200,7 +199,7 @@ public class StartHere extends Applet
                 world.doHud(pObj, " " + fps+" looptime:"+(lastLoopTimeAvg));
                 world.getOutput().present();
                 frames++;
-            }
+            }*/
             if(pObj.getHealth() <= 0)
             {
                 world.getSfxMan().stopClip("fruity_loop");
@@ -215,30 +214,46 @@ public class StartHere extends Applet
                 }
                 return true;
             }
-            try
+            /*try
             {
                 Thread.yield();//sleep(0, 100);
             }
             catch(Exception e)
             {
                 System.out.println(" exception in the sleep 'try method'"+e.toString());
-            }
+            }*/
             if (!StartHere.infLoop) {
-                return false;
+                stopThreads();
+                return false;                
             }            
-            lastLoopTime_count++;
+            world.lastLoopTime_count++;
         }
-        logicThread.StopMe();
-        logicThread.stop();
-        try{
-            logicThread.join();
-        } catch(Exception e){
-            System.out.println("main thread was waiting on thread to finish" + e.toString());
-        }
-        /*while(logicThread.isAlive()){
-            //wait for logic thread to die
-        }*/
+        this.stopThreads();
         return false;
+    }
+    public void stopThreads()
+    {
+        if(logicThread !=null ){
+            logicThread.StopMe();
+            //logicThread.stop();
+            try{
+                logicThread.join();
+            } catch(Exception e){
+                System.out.println("main thread was waiting on thread to finish" + e.toString());
+            }
+        }
+        if(logicThread != null){
+            renderThread.StopMe();
+            //logicThread.stop();
+            try{
+                renderThread.join();
+            } catch(Exception e){
+                System.out.println("main thread was waiting on thread to finish" + e.toString());
+            }
+            /*while(logicThread.isAlive()){
+                //wait for logic thread to die
+            }*/
+        }
     }
     public boolean exitGame(){
         world.getOutput().setEnabled(false);      
