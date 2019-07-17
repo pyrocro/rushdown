@@ -30,7 +30,7 @@ public class StartHere extends Applet
     {
         System.setProperty("sun.java2d.transaccel", "True");
         // System.setProperty("sun.java2d.trace", "timestamp,log,count");
-        //System.setProperty("sun.java2d.opengl", "True");
+        System.setProperty("sun.java2d.opengl", "True");
         //System.setProperty("sun.java2d.d3d", "True");
         System.setProperty("sun.java2d.ddforcevram", "True");
         //System.getProperty()
@@ -202,11 +202,12 @@ public class StartHere extends Applet
             }*/
             if(pObj.getHealth() <= 0)
             {
+                this.stopThreads();
                 world.getSfxMan().stopClip("fruity_loop");
                 world.getSfxMan().stopClip("s_finish");
                 world.msgPause("GAME OVER :(.....Score is " + pObj.getScore(), "rave");
                 if(pObj.getScore() > world.getHighScore())
-                {
+                {                    
                     world.setHighScore(pObj.getScore());
                     world.getSfxMan().playClip("fanfare");
                     world.name = JOptionPane.showInputDialog(this, "enter you name", "New High Score :)", 1);

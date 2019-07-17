@@ -472,25 +472,25 @@ public abstract class Obj
     protected World objWorld; //volatile
     protected Obj owner;
     protected int worth;
-    protected volatile double mass;
-    protected volatile double density;
-    protected volatile double x; //x co-ordinates    
-    protected volatile double y; //y co-ordinates
-    protected volatile double prevX; // previous x co-ordinates
-    protected volatile double prevY; // previous y co-ordinates
-    protected volatile double xs; //x speed
-    protected volatile double ys; //y speed
-    protected volatile double dxs; //x destination speed(acceleration is used to achive this speed)
-    protected volatile double dys; //y destination speed(acceleration is used to achive this speed)
-    protected volatile double xa; //x acceleration
-    protected volatile double ya; //y acceleration
-    protected volatile double dxa; //x destination acceleration
-    protected volatile double dya; //x destination acceleration
-    protected volatile double width;
-    protected volatile double height;
-    protected volatile Sprite sprite;
-    protected volatile Sfx sfx_shoot1;
-    protected volatile ClickableArea click;
+    protected double mass;
+    protected double density;
+    protected double x; //x co-ordinates    
+    protected double y; //y co-ordinates
+    protected double prevX; // previous x co-ordinates
+    protected double prevY; // previous y co-ordinates
+    protected double xs; //x speed
+    protected double ys; //y speed
+    protected double dxs; //x destination speed(acceleration is used to achive this speed)
+    protected double dys; //y destination speed(acceleration is used to achive this speed)
+    protected double xa; //x acceleration
+    protected double ya; //y acceleration
+    protected double dxa; //x destination acceleration
+    protected double dya; //x destination acceleration
+    protected double width;
+    protected double height;
+    protected Sprite sprite;
+    protected Sfx sfx_shoot1;
+    protected ClickableArea click;
     protected Sfx sfx_shoot2;
     protected Sfx sfx_shoot3;
     protected Sfx sfx_hit;

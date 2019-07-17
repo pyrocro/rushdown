@@ -127,7 +127,7 @@ public class World
         getSpriteMan().loadSprite("cro/j2d/pics/enemy3.gif", "spjunk2");
         getSpriteMan().loadSprite("cro/j2d/pics/ship_e.png", "ship_e");
         getSpriteMan().loadSprite("cro/j2d/pics/rushdown_splash.png", "rushdown_splash");
-        getSpriteMan().loadSprite("cro/j2d/pics/rushdown_menu.png", "rushdown_menu");
+        getSpriteMan().loadSprite("cro/j2d/pics/rushdown_menu_panda.png", "rushdown_menu");
         getSpriteMan().loadSprite("cro/j2d/pics/rushdown_shields.png", "shields");
         getSpriteMan().loadSprite("cro/j2d/pics/rushdown_score.png", "score");
         getSpriteMan().loadSprite("cro/j2d/pics/highscore.png", "highscore");
@@ -135,7 +135,8 @@ public class World
         getSpriteMan().loadSprite("cro/j2d/pics/pickup2.gif", "pickup2");
         getSpriteMan().loadSprite("cro/j2d/pics/pickup3.gif", "pickup3");
         getSpriteMan().loadSprite("cro/j2d/pics/pickup4.gif", "pickup4");
-        getSpriteMan().loadSprite("cro/j2d/pics/enemy2.gif", "enemy2");
+        //getSpriteMan().loadSprite("cro/j2d/pics/enemy2.gif", "enemy2");
+        getSpriteMan().loadSprite("cro/j2d/pics/rakuten-bee-small.png", "enemy2");        
         getSpriteMan().loadSprite("cro/j2d/pics/jetpackman_small.png", "enemy4");
         getSpriteMan().loadSprite("cro/j2d/pics/enemy3_dmg_1.gif", "enemy3");
         getSfxMan().setNullSound(getSfxMan().loadSfx("cro/sounds/sfx/null.au", "null"));
@@ -300,7 +301,7 @@ public class World
             spaceJunkObj.setColorB((float)Math.random());
         }
 
-        for(int i = 0; i < 300; i++)
+        for(int i = 0; i < 200; i++)
         {
             spaceJunkObj = new SpaceJunkObj(getVecDebris2(), null, 20, 2, (int)((double)getPlayableXSize() * Math.random()), (int)((double)getLEVEL_PIXEL_HEIGHT() * Math.random()), this);
             spaceJunkObj.setColorR((float)Math.random());

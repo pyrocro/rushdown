@@ -31,7 +31,7 @@ public class Enemy2Obj extends Enemy
         ys = 0.0D;
         dxs = -(width / 60) - (5*Math.random() );//-(width / 5);
         dys = 0.0D;
-        health = 100;
+        health = 500;
         worth = 2000;
         xa = 1D;
         ya = 0.25D;
@@ -55,9 +55,9 @@ public class Enemy2Obj extends Enemy
         for(int i = 0; i < 1; i++)
         {
             ex = new Particle(vector, null, ((int)x + width) - 8, (int)(((y + (double)(height / 2)) - 6D) + Math.random() * 6D), objWorld);
-            ex.setColorR(0.2F);
-            ex.setColorG(0.2F);
-            ex.setColorB(0.4F);
+            ex.setColorR(0.4F);
+            ex.setColorG(0.4F);
+            ex.setColorB(0.6F);
             ex.setHealth(5);
             ex.setXs(0.0D);
             ex.setHeight(8);
@@ -107,8 +107,9 @@ public class Enemy2Obj extends Enemy
             ex.setColorB(1.0F);
             ex.setWidth(2 + (int)(6D * Math.random()));
             ex.setHeight(2 + (int)( 6D * Math.random()));
-            ex.setCRate(-0.005f);
+            ex.setCRate(-0.005f-(float)-(Math.random()/-100));
             ex.drawFx = Particle.FX_FADE;
+            ex.setTangible(true);
         }
 
         for(int i = 0; i < 40; i++)
@@ -125,7 +126,8 @@ public class Enemy2Obj extends Enemy
             ex.setColorB(1.0F);
             ex.setWidth(3 + (int)(4D * Math.random()));
             ex.setHeight(3 + (int)(4D * Math.random()));
-            ex.setCRate(-0.002f);
+            ex.setCRate(-0.005f-(float)-(Math.random()/-100));
+            ex.setTangible(true);
         }
 
         for(int i = 0; i < 50; i++)
@@ -138,7 +140,8 @@ public class Enemy2Obj extends Enemy
             ex.setColorB(1.0F);
             ex.setWidth(5 + (int)(4D * Math.random()));
             ex.setHeight(5 + (int)(4D * Math.random()));
-            ex.setCRate(-0.005f);
+            ex.setCRate(-0.005f-(float)-(Math.random()/-100));
+            ex.setTangible(true);
         }        
         sfx_die.play();
         Pickup1Obj.createHPPickup(1, this);
@@ -166,6 +169,7 @@ public class Enemy2Obj extends Enemy
             ex.setWidth(2 + (int)(5D * Math.random()));
             ex.setHeight(2 + (int)(5D * Math.random()));
             ex.setCRate(-0.01F);
+            
         }
         sfx_hit.play();
     }

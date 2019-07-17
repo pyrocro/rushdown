@@ -82,29 +82,35 @@ public class Enemy3Obj extends Enemy
 
     public void doExplosion()
     {
-        for(int i = 0; i < 2; i++)
+        for(int i = 0; i < 20; i++)
         {
             Particle ex = new Particle(vector, null, (int)(x + (double)(width / 2) * Math.random()), (int)(y + (double)(height / 4)) + (int)((double)(height / 2) * Math.random()), objWorld);
             ex.setDxs(dxs * Math.random() * -1.5D);
             ex.setDys(dys * Math.random() * 1.5D);
-            ex.setHealth(30);
+            ex.setHealth(120);
             ex.setColorR(1.0F);
             ex.setColorG(0.5F);
             ex.setColorB(0.5F);
             ex.setWidth(3 + (int)(5D * Math.random()));
             ex.setHeight(3 + (int)(5D * Math.random()));
+            ex.setCRate(-0.002f-(float)-(Math.random()/-100));
         }
 
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 20; i++)
         {
             Particle ex = new Particle(vector, null, (int)(x + (double)(width / 2) * Math.random()), (int)(y + (double)(height / 3)) + (int)((double)(height / 3) * Math.random()), objWorld);
             ex.setDxs(dxs * (4D * Math.random()) * -1D);
-            ex.setHealth(20);
+            if(Math.random() > 0.5D)
+                ex.setDys(2D * Math.random());
+            else
+                ex.setDys(2D * Math.random() * -1D);
+            ex.setHealth(60);
             ex.setColorR(0.5F);
             ex.setColorG(0.9F);
             ex.setColorB(0.5F);
             ex.setWidth(5 + (int)(4D * Math.random()));
             ex.setHeight(5 + (int)(4D * Math.random()));
+            ex.setCRate(-0.008f-(float)-(Math.random()/-100));
         }
         sfx_die.play();
         Pickup1Obj.createHPPickup(1, this);
