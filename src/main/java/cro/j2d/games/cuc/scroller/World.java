@@ -138,7 +138,8 @@ public class World
         //getSpriteMan().loadSprite("cro/j2d/pics/enemy2.gif", "enemy2");
         getSpriteMan().loadSprite("cro/j2d/pics/rakuten-bee-small.png", "enemy2");        
         getSpriteMan().loadSprite("cro/j2d/pics/jetpackman_small.png", "enemy4");
-        getSpriteMan().loadSprite("cro/j2d/pics/enemy3_dmg_1.gif", "enemy3");
+        //getSpriteMan().loadSprite("cro/j2d/pics/enemy3_dmg_1.gif", "enemy3");
+        getSpriteMan().loadSprite("cro/j2d/pics/hero-panda-small.png", "enemy3");        
         getSfxMan().setNullSound(getSfxMan().loadSfx("cro/sounds/sfx/null.au", "null"));
         //getSfxMan().loadSfx("cro/sounds/loops/fruity_loop.au", "fruity_loop");
         //getSfxMan().loadSfx("cro/sounds/loops/tri.wav", "fruity_loop");
