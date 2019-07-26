@@ -103,18 +103,18 @@ public class Enemy2Obj extends Enemy
         for(int i = 0; i < 200; i++)
         {
             tmp_angle = (Math.random()*360);
-            tmp_x = (x+(width/2)) + (((width/2) -(width/(3*Math.random()))) * Math.cos(tmp_angle));
-            tmp_y = (y+(width/2)) + (((height/2) -(height/(3*Math.random()))) * Math.sin(tmp_angle));
+            tmp_x = (x+(width/2)) + (((width/8)+(width/8)*Math.random()) * Math.cos(tmp_angle));
+            tmp_y = (y+(width/2)) + (((width/8)+(height/8)*Math.random()) * Math.sin(tmp_angle));
             Particle ex = new Particle(vector, null, (int)tmp_x, tmp_y, objWorld);
-            ex.setDxs(4* Math.cos(tmp_angle));
-            ex.setDys(4*Math.sin(tmp_angle));
+            ex.setDxs(this.dxs+(3*Math.random())* Math.cos(tmp_angle));
+            ex.setDys(this.dys+(3*Math.random())*Math.sin(tmp_angle));
             ex.setHealth(120);
             ex.setColorR(1.0F);
-            ex.setColorG(0.5F);
+            ex.setColorG(1.0F);
             ex.setColorB(0.5F);
             ex.setWidth(3 + (int)(5D * Math.random()));
             ex.setHeight(3 + (int)(5D * Math.random()));
-            ex.setCRate(-0.008f-(float)-(Math.random()/-100));
+            ex.setCRate(-0.01f-(float)-(Math.random()/-100));
         }
         
         for(int i = 0; i < 20; i++)
